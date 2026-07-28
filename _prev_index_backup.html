@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>보이지 않는 숲 · 2026 그린캠프</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200;300;500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+<style>
+  :root{
+    --char:#141009; --char2:#1e1913;
+    --bone:#f0eadc; --bone-dim:#b8ae9a; --dim2:#8b8171;
+    --cream:#f7f2e7; --cream2:#efe8d8; --ink:#2b2419;
+    --ember:#c4552e; --ember-soft:#e29268;
+    --moss:#5f8557; --moss-deep:#37563a; --growth:#a6c887; --growth-soft:#cbe0b4;
+    --fail:#c4552e; --half:#c99a44; --ok:#6b9d5c;
+    --recovery:0;
+    --serif:'Noto Serif KR', serif;
+    --sans:'Pretendard', system-ui, -apple-system, sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--sans);background:var(--char);color:var(--bone);line-height:1.6;
+       -webkit-font-smoothing:antialiased;overflow-x:hidden}
+  .wrap{max-width:660px;margin:0 auto;padding:0 22px}
+  ::selection{background:var(--growth);color:var(--ink)}
+
+  .badge{position:fixed;top:0;left:0;right:0;z-index:60;display:flex;justify-content:center;pointer-events:none}
+  .badge span{margin-top:11px;font-size:11px;letter-spacing:.14em;color:var(--bone-dim);
+    background:rgba(20,16,9,.5);border:1px solid rgba(240,234,220,.14);backdrop-filter:blur(10px);
+    padding:6px 15px;border-radius:999px}
+  .badge b{color:var(--bone);font-weight:600}
+
+  /* ================= HERO ================= */
+  .hero{position:relative;height:240vh}
+  .hero__sticky{position:sticky;top:0;height:100dvh;overflow:hidden;display:flex;align-items:center;justify-content:center}
+  .scene{position:absolute;inset:0;width:100%;height:100%}
+  .sky-recover{opacity:var(--recovery)}
+  .foliage{opacity:var(--recovery);transform-box:fill-box;transform-origin:bottom center;
+           transform:scale(calc(.2 + .8 * var(--recovery)))}
+  .sapling{opacity:calc((var(--recovery) - .55) * 2.6);transform-box:fill-box;transform-origin:bottom center;
+           transform:scaleY(var(--recovery))}
+  .haze{opacity:calc(.55 - var(--recovery)*.55)}
+  .bird{opacity:calc((var(--recovery) - .72) * 3.6)}
+  .hero__veil{position:absolute;inset:0;z-index:2;
+    background:linear-gradient(180deg,rgba(14,11,6,.62) 0%,rgba(14,11,6,.06) 30%,rgba(14,11,6,.1) 60%,rgba(14,11,6,.88) 100%)}
+  .hero__content{position:relative;z-index:3;text-align:center;padding:0 24px;max-width:620px}
+  .hero__eyebrow{font-size:11px;letter-spacing:.38em;color:var(--ember-soft);margin-bottom:22px;font-weight:600}
+  .hero__title{font-family:var(--serif);font-weight:200;font-size:clamp(28px,7.4vw,52px);line-height:1.32;
+    color:var(--bone);text-shadow:0 2px 40px rgba(0,0,0,.55);letter-spacing:-.01em}
+  .hero__title b{font-weight:700}
+  .hero__title .line{display:block}
+  .hero__rule{width:34px;height:1px;background:var(--ember-soft);margin:26px auto 0;opacity:.8}
+  .hero__sub{margin-top:22px;font-size:clamp(13px,3.4vw,15.5px);color:var(--bone-dim);font-weight:300;line-height:1.75}
+  .scroll-cue{position:absolute;bottom:26px;left:50%;transform:translateX(-50%);z-index:3;
+    display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--bone-dim);
+    font-size:10px;letter-spacing:.24em;opacity:calc(1 - var(--recovery)*2.4)}
+  .scroll-cue i{display:block;width:1px;height:32px;background:linear-gradient(var(--bone-dim),transparent);
+    animation:drop 2.2s ease-in-out infinite}
+  @keyframes drop{0%,100%{transform:scaleY(.5);transform-origin:top;opacity:.4}50%{transform:scaleY(1);opacity:1}}
+
+  /* ================= VOICES ================= */
+  .voices{position:relative;z-index:4;padding:0 0 100px;
+    background:linear-gradient(180deg,rgba(20,16,9,0),var(--char) 10%)}
+  .vhead{text-align:center;padding:100px 22px 12px}
+  .vhead .k{font-size:11px;letter-spacing:.3em;color:var(--ember-soft);font-weight:600;margin-bottom:18px}
+  .vhead h2{font-family:var(--serif);font-size:clamp(21px,5.2vw,30px);font-weight:300;color:var(--bone);line-height:1.5}
+  .vhead h2 b{font-weight:700}
+  .vlist{max-width:540px;margin:44px auto 0;padding:0 22px}
+  .voice{margin-bottom:14px;background:linear-gradient(100deg,rgba(240,234,220,.07),rgba(240,234,220,.02));
+    border:1px solid rgba(240,234,220,.1);border-left:2px solid var(--ember-soft);
+    border-radius:0 14px 14px 0;padding:20px 22px}
+  .voice .who{font-size:11px;letter-spacing:.1em;color:var(--ember-soft);font-weight:700;margin-bottom:9px}
+  .voice .say{font-family:var(--serif);font-size:15px;color:var(--bone);line-height:1.8;font-weight:300}
+  .turn{max-width:540px;margin:62px auto 0;text-align:center;padding:0 22px}
+  .turn .tr{width:1px;height:44px;background:linear-gradient(var(--ember-soft),transparent);margin:0 auto 30px}
+  .turn p{font-family:var(--serif);font-size:clamp(21px,5.4vw,32px);font-weight:500;color:var(--bone);line-height:1.5}
+  .turn small{display:block;margin-top:18px;font-family:var(--sans);font-size:13px;color:var(--bone-dim);font-weight:300}
+
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .9s cubic-bezier(.2,.7,.3,1),transform .9s cubic-bezier(.2,.7,.3,1)}
+  .reveal.in{opacity:1;transform:none}
+
+  /* ================= APP ================= */
+  .app{background:var(--cream);color:var(--ink);padding:70px 0 96px;position:relative;z-index:4}
+  .steps{display:flex;gap:4px;max-width:520px;margin:0 auto 32px;padding:0 22px}
+  .steps i{height:2.5px;flex:1;border-radius:2px;background:#ddd5c2;transition:background .5s}
+  .steps i.on{background:var(--moss)}
+  .card{max-width:520px;margin:0 auto;background:#fffdf8;border:1px solid #e6ddca;border-radius:20px;
+    padding:34px 26px;box-shadow:0 30px 60px -34px rgba(55,86,58,.5),0 2px 0 rgba(255,255,255,.7) inset}
+  .kicker{font-size:10.5px;letter-spacing:.2em;font-weight:700;color:var(--moss);margin-bottom:14px}
+  .qtext{font-family:var(--serif);font-size:clamp(20px,4.8vw,25px);font-weight:500;color:var(--ink);
+    line-height:1.5;margin-bottom:9px;letter-spacing:-.01em}
+  .qsub{font-size:13.5px;color:#6d6555;margin-bottom:24px;font-weight:300;line-height:1.7}
+  .opts{display:grid;gap:9px}
+  .opt{text-align:left;font-family:var(--sans);font-size:15px;color:var(--ink);background:var(--cream);
+    border:1px solid #e6ddca;border-radius:13px;padding:16px 18px;cursor:pointer;font-weight:500;line-height:1.5;
+    transition:border-color .18s,background .18s,transform .18s}
+  .opt small{display:block;margin-top:5px;font-size:12px;color:#807765;font-weight:400;line-height:1.5}
+  .opt:hover{border-color:var(--moss);background:#f3f7ee;transform:translateX(3px)}
+  .opt:focus-visible{outline:2px solid var(--moss);outline-offset:2px}
+  .fade{animation:fade .55s cubic-bezier(.2,.7,.3,1)}
+  @keyframes fade{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+  .case{border-radius:15px;padding:24px 21px;margin-bottom:22px;border:1px dashed}
+  .case.c1{background:linear-gradient(160deg,#fbf1ec,#f8eae2);border-color:#dfa88c}
+  .case.c2{background:linear-gradient(160deg,#f2f8ec,#eaf3e2);border-color:#a9c795}
+  .case .tag{font-size:10.5px;letter-spacing:.18em;font-weight:700;margin-bottom:10px}
+  .case.c1 .tag{color:var(--ember)}
+  .case.c2 .tag{color:var(--moss-deep)}
+  .case .desc{font-size:14.5px;color:var(--ink);line-height:1.75}
+  .case .desc b{font-weight:700}
+
+  .verdict{text-align:center;margin-bottom:26px}
+  .verdict .vlabel{display:inline-block;font-size:11px;letter-spacing:.16em;font-weight:700;
+    padding:7px 16px;border-radius:999px;color:#fff}
+  .verdict .vtitle{font-family:var(--serif);font-size:clamp(22px,5.4vw,30px);font-weight:700;margin-top:16px;line-height:1.4}
+  .tl{margin:8px 0 24px;border-left:1.5px solid #e6ddca}
+  .tl .row{display:grid;grid-template-columns:48px 1fr;gap:14px;padding:15px 0 15px 18px;position:relative;
+    opacity:0;animation:fade .55s ease forwards}
+  .tl .row::before{content:"";position:absolute;left:-5.5px;top:23px;width:9px;height:9px;border-radius:50%;
+    background:#d5cdb9;border:2px solid #fffdf8}
+  .tl .row.g::before{background:var(--ok)}
+  .tl .row.b::before{background:var(--fail)}
+  .tl .row.h::before{background:var(--half)}
+  .tl .yr{font-family:var(--serif);font-size:16px;font-weight:700;color:var(--moss-deep)}
+  .tl .txt{font-size:13.5px;color:#5f5747;line-height:1.65}
+  .explain{background:var(--cream);border-radius:13px;padding:19px;font-size:14px;color:var(--ink);
+    line-height:1.8;border-left:2.5px solid var(--moss)}
+  .explain b{color:var(--moss-deep);font-weight:700}
+
+  .cross{background:linear-gradient(150deg,#26361f,#1b2917);border-radius:16px;padding:26px 22px;margin-bottom:24px}
+  .cross .cv{font-size:11px;letter-spacing:.16em;color:var(--growth);margin-bottom:12px;font-weight:600}
+  .cross .cx{font-family:var(--serif);font-size:16.5px;line-height:1.85;color:#fff;font-weight:300}
+  .axiom{text-align:center;font-family:var(--serif);font-size:clamp(16.5px,4.2vw,20px);line-height:1.7;
+    color:var(--ink);font-weight:400;padding:6px 0 2px}
+  .axiom b{color:var(--moss-deep);font-weight:700}
+
+  .tcard{text-align:center}
+  .tcard .tk{font-size:10.5px;letter-spacing:.2em;color:var(--moss);font-weight:700;margin-bottom:12px}
+  .temo{font-size:48px;line-height:1;margin:6px 0 14px}
+  .tcard .tname{font-family:var(--serif);font-size:clamp(29px,7vw,40px);font-weight:700;color:var(--moss-deep);letter-spacing:-.02em}
+  .tcard .ttag{color:#6d6555;margin-top:12px;font-size:14px;line-height:1.75;font-weight:300}
+
+  .msg label{display:block;font-family:var(--serif);font-size:clamp(19px,4.6vw,23px);font-weight:500;
+    color:var(--ink);line-height:1.5;margin-bottom:8px}
+  .msg .hint{font-size:13px;color:#6d6555;font-weight:300;margin-bottom:20px;line-height:1.7}
+  textarea.ta{width:100%;min-height:100px;resize:vertical;background:var(--cream);border:1px solid #e6ddca;
+    border-radius:13px;padding:15px 16px;font-family:var(--sans);font-size:15px;color:var(--ink);line-height:1.7}
+  textarea.ta::placeholder{color:#a89e8b}
+  textarea.ta:focus{outline:2px solid var(--moss);outline-offset:1px;border-color:transparent}
+  .cnt{text-align:right;font-size:11.5px;color:#a89e8b;margin-top:7px}
+
+  .btns{display:flex;gap:9px;justify-content:center;margin-top:24px;flex-wrap:wrap}
+  .btn{font-family:var(--sans);font-size:13.5px;font-weight:600;padding:13px 22px;border-radius:11px;
+    cursor:pointer;border:1px solid #ddd4c1;background:var(--cream);color:var(--ink);
+    transition:border-color .18s,background .18s,transform .18s}
+  .btn:hover{border-color:var(--moss);background:#f3f7ee;transform:translateY(-1px)}
+  .btn.primary{background:var(--moss-deep);color:#fff;border-color:transparent}
+  .btn.primary:hover{background:var(--moss)}
+  .btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+  .skip{background:none;border:none;color:#8b8171;font-size:12.5px;text-decoration:underline;
+    cursor:pointer;font-family:var(--sans);margin-top:14px;display:block;width:100%;text-align:center}
+
+  /* ================= SONG ================= */
+  .song{background:linear-gradient(180deg,var(--char),#1a2416 55%,var(--char));padding:92px 0 96px;position:relative}
+  .song .inner{position:relative;z-index:2;text-align:center}
+  .song .k{font-size:11px;letter-spacing:.3em;color:var(--growth);font-weight:600;margin-bottom:18px}
+  .song h2{font-family:var(--serif);font-size:clamp(21px,5.2vw,30px);font-weight:300;color:var(--bone);line-height:1.6;max-width:520px;margin:0 auto}
+  .song h2 b{font-weight:700;color:#fff}
+  .player{max-width:460px;margin:36px auto 0;background:rgba(240,234,220,.06);border:1px solid rgba(240,234,220,.13);
+    border-radius:18px;padding:18px 20px;display:flex;align-items:center;gap:15px;text-align:left;backdrop-filter:blur(6px)}
+  .pbtn{flex:0 0 auto;width:46px;height:46px;border-radius:50%;border:none;cursor:pointer;
+    background:var(--growth);color:#1e2a17;font-size:15px;display:flex;align-items:center;justify-content:center;
+    transition:transform .18s,background .18s}
+  .pbtn:hover{transform:scale(1.06);background:#b9d79c}
+  .pmeta .pt{font-family:var(--serif);font-size:15.5px;font-weight:700;color:var(--bone)}
+  .pmeta .ps{font-size:11.5px;color:var(--dim2);margin-top:4px}
+  .eq{display:flex;gap:3px;align-items:flex-end;height:18px;margin-left:auto}
+  .eq i{width:3px;background:var(--growth);border-radius:2px;height:5px;opacity:.35}
+  .eq.on i{animation:bounce .9s ease-in-out infinite;opacity:1}
+  .eq.on i:nth-child(2){animation-delay:.15s}.eq.on i:nth-child(3){animation-delay:.3s}
+  .eq.on i:nth-child(4){animation-delay:.45s}
+  @keyframes bounce{0%,100%{height:5px}50%{height:17px}}
+
+  .lyrics{max-width:460px;margin:22px auto 0;background:rgba(20,26,16,.5);border:1px solid rgba(240,234,220,.1);
+    border-radius:18px;padding:26px 22px;text-align:center}
+  .lyrics .lk{font-size:10.5px;letter-spacing:.2em;color:var(--growth);font-weight:700;margin-bottom:16px}
+  .lyr{font-family:var(--serif);font-size:15px;color:rgba(240,234,220,.5);line-height:1.9;font-weight:300;padding:6px 0;
+    transition:color .5s}
+  .lyr.mine{color:#fff;font-size:17.5px;font-weight:500;animation:fade .6s ease}
+  .lyr.mine::after{content:"내 한 마디";display:block;font-family:var(--sans);font-size:10px;
+    letter-spacing:.16em;color:var(--growth);margin-top:7px;font-weight:700}
+
+  .write{max-width:460px;margin:24px auto 0;background:rgba(240,234,220,.05);border:1px dashed rgba(240,234,220,.22);
+    border-radius:18px;padding:24px 22px;text-align:left}
+  .write .wk{font-family:var(--serif);font-size:18px;font-weight:500;color:var(--bone);margin-bottom:8px;text-align:center}
+  .write .wh{font-size:12.5px;color:var(--dim2);line-height:1.75;margin-bottom:18px;text-align:center;font-weight:300}
+  .write textarea{width:100%;min-height:76px;resize:vertical;background:rgba(20,26,16,.55);
+    border:1px solid rgba(240,234,220,.16);border-radius:12px;padding:14px 15px;
+    font-family:var(--sans);font-size:15px;color:var(--bone);line-height:1.7}
+  .write textarea::placeholder{color:rgba(240,234,220,.3)}
+  .write textarea:focus{outline:2px solid var(--growth);outline-offset:1px;border-color:transparent}
+  .wcnt{text-align:right;font-size:11px;color:var(--dim2);margin-top:6px}
+  .wbtn{width:100%;margin-top:12px;font-family:var(--sans);font-size:14px;font-weight:700;padding:14px;
+    border-radius:11px;border:none;background:var(--growth);color:#1e2a17;cursor:pointer;transition:background .2s}
+  .wbtn:hover{background:#b9d79c}
+  .wbtn:disabled{opacity:.4;cursor:not-allowed}
+  .wdone{text-align:center;color:var(--growth);font-size:13.5px;font-weight:600;padding:10px 0}
+  .song .note{max-width:460px;margin:22px auto 0;font-size:12.5px;color:var(--dim2);line-height:1.9;font-weight:300}
+  .song .note b{color:var(--growth-soft);font-weight:500}
+
+  /* ================= STORY ================= */
+  .story{position:relative;background:var(--char);padding:104px 0 110px;overflow:hidden}
+  .story__glow{position:absolute;left:50%;top:44%;width:150vw;height:80vh;transform:translate(-50%,-50%);
+    background:radial-gradient(closest-side,rgba(120,180,110,.24),rgba(120,180,110,0) 72%);
+    opacity:0;transition:opacity 1.6s ease;pointer-events:none}
+  .story.lit .story__glow{opacity:1}
+  .story .inner{position:relative;z-index:2;text-align:center}
+  .story .k{font-size:11px;letter-spacing:.3em;color:var(--growth);font-weight:600;margin-bottom:20px}
+  .story h2{font-family:var(--serif);font-size:clamp(21px,5.2vw,30px);font-weight:300;color:var(--bone);
+    line-height:1.62;max-width:560px;margin:0 auto}
+  .story h2 b{font-weight:700;color:#fff}
+  .frames{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:560px;margin:44px auto 0}
+  .frame{aspect-ratio:3/4;border-radius:12px;border:1px solid rgba(240,234,220,.14);overflow:hidden;
+    background:linear-gradient(160deg,#20291c,#161d14);display:flex;align-items:center;justify-content:center}
+  .frame img{width:100%;height:100%;object-fit:cover;display:block}
+  .frame .ph{font-size:10.5px;color:var(--dim2);letter-spacing:.1em;text-align:center;padding:0 8px;line-height:1.6}
+  .story .cap{margin-top:26px;font-size:12px;color:var(--dim2);font-weight:300}
+  .story .line{font-family:var(--serif);font-size:clamp(16px,4vw,19px);color:var(--bone);font-weight:300;
+    line-height:1.9;max-width:520px;margin:40px auto 0}
+  .story .line b{color:var(--growth);font-weight:500}
+
+  /* ================= TICKET ================= */
+  .tick{background:linear-gradient(175deg,#f7f2e7,#eee7d6);padding:88px 0 100px;color:var(--ink)}
+  .tick .th{text-align:center;margin-bottom:34px}
+  .tick .th .k{font-size:10.5px;letter-spacing:.24em;color:var(--moss);font-weight:700;margin-bottom:14px}
+  .tick .th h2{font-family:var(--serif);font-size:clamp(21px,5.2vw,28px);font-weight:500;line-height:1.5}
+  .tick .arrow{width:1px;height:30px;background:linear-gradient(var(--moss),transparent);margin:18px auto 0}
+  .ticket{max-width:440px;margin:0 auto;background:#fffdf8;border-radius:20px;overflow:hidden;
+    box-shadow:0 34px 64px -34px rgba(55,86,58,.55);border:1px solid #e6ddca}
+  .ticket__top{background:linear-gradient(140deg,#37563a,#2a4530);padding:26px 24px 24px;color:#fff;position:relative}
+  .ticket__top .brand{font-size:9.5px;letter-spacing:.28em;color:var(--growth);font-weight:700}
+  .ticket__top .tt{font-family:var(--serif);font-size:20px;font-weight:700;margin-top:9px}
+  .ticket__top .no{position:absolute;right:22px;top:26px;font-size:10px;color:rgba(240,234,220,.55);letter-spacing:.1em}
+  .perf{position:relative;height:20px;background:#fffdf8}
+  .perf::before,.perf::after{content:"";position:absolute;top:50%;width:20px;height:20px;border-radius:50%;
+    background:var(--cream2);transform:translateY(-50%)}
+  .perf::before{left:-10px}.perf::after{right:-10px}
+  .perf i{position:absolute;left:16px;right:16px;top:50%;height:1px;
+    background:repeating-linear-gradient(90deg,#dcd3bf 0 6px,transparent 6px 12px)}
+  .ticket__body{padding:6px 24px 26px}
+  .trow{padding:14px 0;border-bottom:1px solid #efe8d8}
+  .trow:last-of-type{border-bottom:none}
+  .trow .tl2{font-size:10.5px;letter-spacing:.16em;color:var(--moss);font-weight:700;margin-bottom:7px}
+  .trow .tv{font-family:var(--serif);font-size:19px;font-weight:700;color:var(--moss-deep)}
+  .trow .tm{font-size:14px;color:var(--ink);line-height:1.75;font-weight:300;font-style:italic}
+  .staff{margin:18px 24px 24px;border:1px dashed #cfc6b1;border-radius:13px;padding:17px;text-align:center;background:var(--cream)}
+  .staff .sn{font-size:11.5px;color:#7a7160;line-height:1.7;margin-bottom:13px}
+  .sbtn{width:100%;font-family:var(--sans);font-size:14px;font-weight:700;padding:14px;border-radius:11px;
+    border:none;background:var(--moss-deep);color:#fff;cursor:pointer;transition:background .2s}
+  .sbtn:hover{background:var(--moss)}
+  .sbtn.done{background:#dfe7d6;color:var(--moss-deep);cursor:default}
+  .gift{max-width:440px;margin:26px auto 0;text-align:center;font-size:13px;color:#6d6555;line-height:1.85;font-weight:300}
+  .gift b{color:var(--moss-deep);font-weight:600}
+
+  /* ================= TEAM ================= */
+  .team{background:var(--char);padding:84px 0 70px;text-align:center}
+  .team .k{font-size:10.5px;letter-spacing:.24em;color:var(--ember-soft);font-weight:700;margin-bottom:16px}
+  .team h2{font-family:var(--serif);font-size:clamp(19px,4.6vw,26px);font-weight:300;color:var(--bone);line-height:1.65}
+  .team h2 b{font-weight:700}
+  .names{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin:30px auto 0;max-width:490px}
+  .names span{background:var(--char2);border:1px solid rgba(240,234,220,.1);border-radius:999px;
+    padding:8px 15px;font-size:12.5px;color:var(--bone-dim)}
+  .foot{margin-top:36px;color:var(--dim2);font-size:11.5px;font-weight:300}
+
+  @media(prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .reveal{transition:none;opacity:1;transform:none}
+    .tl .row{animation:none;opacity:1}
+    .scroll-cue i{animation:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="badge"><span>2026 그린캠프 · <b>OO조</b></span></div>
+
+<!-- ================= HERO ================= -->
+<header class="hero">
+  <div class="hero__sticky">
+    <svg class="scene" viewBox="0 0 1200 700" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+      <defs>
+        <linearGradient id="skyFire" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#332519"/><stop offset="42%" stop-color="#5c3f2c"/>
+          <stop offset="78%" stop-color="#8b5433"/><stop offset="100%" stop-color="#ab6339"/>
+        </linearGradient>
+        <linearGradient id="skyRecover" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#a9cbd2"/><stop offset="52%" stop-color="#cbdfd0"/>
+          <stop offset="100%" stop-color="#e2e9cd"/>
+        </linearGradient>
+        <linearGradient id="ground" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#1b150e"/><stop offset="100%" stop-color="#0b0805"/>
+        </linearGradient>
+      </defs>
+      <rect width="1200" height="700" fill="url(#skyFire)"/>
+      <rect class="sky-recover" width="1200" height="700" fill="url(#skyRecover)"/>
+      <ellipse class="haze" cx="300" cy="150" rx="400" ry="95" fill="#cda078" opacity=".42"/>
+      <ellipse class="haze" cx="920" cy="112" rx="440" ry="82" fill="#dbb88e" opacity=".34"/>
+      <path d="M0,470 Q300,418 600,455 T1200,438 L1200,700 L0,700 Z" fill="#221809" opacity=".55"/>
+      <path d="M0,522 Q350,486 700,512 T1200,500 L1200,700 L0,700 Z" fill="url(#ground)"/>
+      <g id="trees"></g>
+      <g class="bird" fill="none" stroke="#3d5340" stroke-width="2.4" stroke-linecap="round">
+        <path d="M250,150 q10,-9 20,0 q10,-9 20,0"/>
+        <path d="M320,190 q7,-6 14,0 q7,-6 14,0"/>
+        <path d="M905,140 q9,-8 18,0 q9,-8 18,0"/>
+      </g>
+    </svg>
+    <div class="hero__veil"></div>
+    <div class="hero__content">
+      <div class="hero__eyebrow">보이지 않는 숲</div>
+      <h1 class="hero__title">
+        <span class="line">이 숲이 다시 숲이 되기까지,</span>
+        <span class="line"><b>30년</b>이 걸립니다.</span>
+      </h1>
+      <div class="hero__rule"></div>
+      <p class="hero__sub">산불은 1초, 복원은 한 세대.<br>도심 속 서울숲에서, 사라진 숲을 만나보세요.</p>
+    </div>
+    <div class="scroll-cue">스크롤<i></i></div>
+  </div>
+</header>
+
+<!-- ================= VOICES ================= -->
+<section class="voices">
+  <div class="vhead reveal">
+    <div class="k">2022 · 2025 동해안 산불</div>
+    <h2>산불로 우리는<br><b>무엇을 잃었을까요?</b></h2>
+  </div>
+  <div class="vlist">
+    <div class="voice reveal"><div class="who">🧑‍🌾 산골 마을 어르신</div>
+      <div class="say">“40년 넘게 이 산이랑 같이 살았는데…<br>이제 송이버섯이 안 나요. 마을이 자꾸 비어가네요.”</div></div>
+    <div class="voice reveal"><div class="who">🐈 삵</div>
+      <div class="say">“내 집 어디 갔냐옹…<br>숨을 곳도, 먹이도 없다냥 😿”</div></div>
+    <div class="voice reveal"><div class="who">🌡️ 흙과 하늘</div>
+      <div class="say">“그늘이 사라지니까 한여름엔 정말 뜨거워요.<br>비가 와도 물을 못 붙잡아서, 흙이 금방 메말라요.”</div></div>
+    <div class="voice reveal"><div class="who">🧒 서울에서 온 시민</div>
+      <div class="say">“여름엔 계곡에서 물놀이하고,<br>가을엔 단풍 보러 오고 싶었는데…”</div></div>
+  </div>
+  <div class="turn reveal">
+    <div class="tr"></div>
+    <p>그런데,<br>심는다고 돌아오는 게 아닙니다.</p>
+    <small>지금부터 2분, 당신이 직접 복원을 결정해 보세요.</small>
+  </div>
+</section>
+
+<!-- ================= APP ================= -->
+<section class="app" id="app">
+  <div class="steps" id="steps"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="wrap"><div class="card" id="card"></div></div>
+</section>
+
+<!-- ================= SONG (독립 섹션) ================= -->
+<section class="song" id="song">
+  <div class="wrap inner">
+    <div class="k">지금 이 부스에 흐르는 노래</div>
+    <h2>이 노래의 가사는,<br><b>먼저 다녀간 분들의 한 마디</b>입니다.</h2>
+
+    <div class="player">
+      <button class="pbtn" id="pbtn" aria-label="재생">▶</button>
+      <div class="pmeta">
+        <div class="pt">보이지 않는 숲</div>
+        <div class="ps">시민들의 한 마디로 만든 노래</div>
+      </div>
+      <div class="eq" id="eq"><i></i><i></i><i></i><i></i></div>
+      <!-- 음악 파일: bgm.mp3 를 index.html과 같은 폴더에 넣어주세요 -->
+      <audio id="bgm" src="bgm.mp3" loop preload="none"></audio>
+    </div>
+
+    <div class="lyrics">
+      <div class="lk">LYRICS</div>
+      <div id="lyricbox"></div>
+    </div>
+
+    <div class="write" id="write">
+      <div class="wk">당신의 한 마디도<br>이 노래의 가사가 됩니다</div>
+      <p class="wh">산불이 지나간 숲에게, 그리고 그 숲과 함께 사는 이들에게<br>남기고 싶은 한 줄을 적어주세요.</p>
+      <textarea id="wta" maxlength="40" placeholder="예: 천천히 와도 괜찮으니, 꼭 돌아와 주세요."></textarea>
+      <div class="wcnt"><span id="wcn">0</span> / 40</div>
+      <button class="wbtn" id="wbtn" disabled>가사에 새기기</button>
+    </div>
+
+    <p class="note">
+      오늘 남겨주신 한 마디들은 모여<br>
+      <b>새로운 노래의 가사</b>가 되어 돌아옵니다.<br>
+      완성된 노래는 저희 SNS에서 만나보실 수 있습니다.
+    </p>
+  </div>
+</section>
+
+<!-- ================= STORY ================= -->
+<section class="story" id="story">
+  <div class="story__glow"></div>
+  <div class="wrap inner">
+    <div class="k reveal">그리고, 우리가 다녀온 곳</div>
+    <h2 class="reveal">당신이 방금 남긴 한 마디처럼,<br>우리는 <b>실제로 그 땅에 다녀왔습니다.</b></h2>
+    <div class="frames reveal">
+      <!-- 사진 교체: <img src="photo1.jpg" alt=""> 로 바꿔주세요 -->
+      <div class="frame"><span class="ph">현장 사진 ①<br>안동 · 울진</span></div>
+      <div class="frame"><span class="ph">현장 사진 ②<br>그늘 없는 산</span></div>
+      <div class="frame"><span class="ph">현장 사진 ③<br>다시 돋는 싹</span></div>
+    </div>
+    <p class="cap reveal">2026 그린캠프 · 안동, 울진 산불 피해지</p>
+    <p class="line reveal">
+      한여름, 그늘 하나 없는 산을 걸었습니다.<br>
+      나무가 사라진 자리에는 <b>그늘도 함께 사라져</b> 있었습니다.<br><br>
+      복원에는 우리가 생각한 것보다<br>
+      훨씬 <b>많은 시간과 노력</b>이 필요했습니다.
+    </p>
+  </div>
+</section>
+
+<!-- ================= TICKET ================= -->
+<section class="tick" id="tick" style="display:none">
+  <div class="wrap">
+    <div class="th">
+      <div class="k">LAST STEP</div>
+      <h2>당신의 초록을<br>검은 숲에 나눠주세요</h2>
+      <div class="arrow"></div>
+    </div>
+    <div class="ticket" id="ticket"></div>
+    <p class="gift">
+      화면을 부스 스태프에게 보여주시면 <b>씨앗 키트</b>를 드립니다.<br>
+      “이제 당신의 책상 위에서, 작은 복원을 시작해 주세요.”
+    </p>
+  </div>
+</section>
+
+<!-- ================= TEAM ================= -->
+<section class="team">
+  <div class="wrap">
+    <div class="k">2026 그린캠프</div>
+    <h2>세상을 바꾸는 첫 초록 발걸음,<br><b>여러분의 실천</b>으로부터 시작합니다.</h2>
+    <div class="names">
+      <span>김찬</span><span>박건하</span><span>이주</span><span>현동민</span>
+      <span>박상민</span><span>석도영</span><span>한채아</span><span>HTET MYATWAI</span>
+    </div>
+    <p class="foot">유한킴벌리 · 우리강산 푸르게 푸르게 · 2026 그린캠프</p>
+  </div>
+</section>
+
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var root = document.documentElement;
+
+  /* ---------- scene ---------- */
+  var trees=document.getElementById('trees'), ns='http://www.w3.org/2000/svg';
+  var defs=[{x:90,base:560,h:120,s:1.1},{x:200,base:580,h:90,s:.9},{x:330,base:600,h:140,s:1.2},
+    {x:470,base:585,h:100,s:1.0},{x:600,base:610,h:155,s:1.3},{x:730,base:590,h:110,s:1.05},
+    {x:860,base:600,h:130,s:1.15},{x:1000,base:580,h:95,s:.92},{x:1120,base:600,h:135,s:1.2},
+    {x:30,base:600,h:80,s:.8},{x:410,base:615,h:70,s:.75},{x:920,base:615,h:75,s:.8}];
+  defs.forEach(function(t){
+    var tw=7*t.s, topY=t.base-t.h;
+    var tr=document.createElementNS(ns,'path');
+    tr.setAttribute('d','M'+(t.x-tw/2)+','+t.base+' Q'+(t.x-1)+','+(t.base-t.h*0.5)+' '+(t.x-2)+','+topY+
+      ' L'+(t.x+2)+','+topY+' Q'+(t.x+1)+','+(t.base-t.h*0.5)+' '+(t.x+tw/2)+','+t.base+' Z');
+    tr.setAttribute('fill','#100b06'); trees.appendChild(tr);
+    var br=document.createElementNS(ns,'path');
+    br.setAttribute('d','M'+t.x+','+(topY+18)+' l'+(14*t.s)+',-'+(16*t.s)+' M'+t.x+','+(topY+34)+' l-'+(13*t.s)+',-'+(13*t.s));
+    br.setAttribute('stroke','#100b06');br.setAttribute('stroke-width',2.2*t.s);br.setAttribute('fill','none');
+    trees.appendChild(br);
+    var f1=document.createElementNS(ns,'ellipse');
+    f1.setAttribute('class','foliage');f1.setAttribute('cx',t.x);f1.setAttribute('cy',topY+6);
+    f1.setAttribute('rx',26*t.s);f1.setAttribute('ry',30*t.s);
+    f1.setAttribute('fill',Math.random()>.5?'#4d7845':'#5f8557');trees.appendChild(f1);
+    var f2=document.createElementNS(ns,'ellipse');
+    f2.setAttribute('class','foliage');f2.setAttribute('cx',t.x-10*t.s);f2.setAttribute('cy',topY+22);
+    f2.setAttribute('rx',18*t.s);f2.setAttribute('ry',20*t.s);
+    f2.setAttribute('fill','#6d9459');trees.appendChild(f2);
+  });
+  for(var i=0;i<9;i++){
+    var sx=70+i*135+(i%2?40:0), sy=645;
+    var sp=document.createElementNS(ns,'path');
+    sp.setAttribute('class','sapling');
+    sp.setAttribute('d','M'+sx+','+sy+' l0,-26 M'+sx+','+(sy-14)+' l9,-9 M'+sx+','+(sy-14)+' l-9,-9');
+    sp.setAttribute('stroke','#8bb56d');sp.setAttribute('stroke-width','3');
+    sp.setAttribute('stroke-linecap','round');sp.setAttribute('fill','none');
+    trees.appendChild(sp);
+  }
+  var hero=document.querySelector('.hero');
+  function onScroll(){
+    var h=hero.offsetHeight-window.innerHeight;
+    var p=Math.min(1,Math.max(0,window.scrollY/(h*0.9)));
+    root.style.setProperty('--recovery',p.toFixed(3));
+  }
+  if(reduce){root.style.setProperty('--recovery','1');}
+  else{window.addEventListener('scroll',onScroll,{passive:true});onScroll();}
+
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});
+  },{threshold:.15});
+  document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
+
+  var storyEl=document.getElementById('story');
+  var io2=new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ storyEl.classList.add('lit'); io2.unobserve(e.target);} });
+  },{threshold:.3});
+  io2.observe(storyEl);
+
+  function esc(s){ return s.replace(/[&<>"]/g,function(c){
+    return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+
+  /* ================= SONG (독립 동작) ================= */
+  /* 아래 SEED에 실제로 모인 시민들의 한 마디를 넣어주세요 */
+  var SEED=[
+    '천천히 와도 괜찮으니, 꼭 돌아와 주세요.',
+    '그늘이 다시 생기면, 그 아래 앉아 있을게요.',
+    '삵아, 집 잘 짓고 있어.',
+    '내가 어른이 되면 이 숲에 놀러 갈래요.',
+    '30년 뒤에 다시 보러 올게요.'
+  ];
+  var myLyric=null;
+  function renderLyrics(){
+    var box=document.getElementById('lyricbox');
+    var list=[];
+    for(var i=0;i<SEED.length;i++){
+      list.push('<div class="lyr">“'+esc(SEED[i])+'”</div>');
+      if(i===1 && myLyric) list.push('<div class="lyr mine">“'+esc(myLyric)+'”</div>');
+    }
+    box.innerHTML=list.join('');
+  }
+  renderLyrics();
+
+  var wta=document.getElementById('wta'), wcn=document.getElementById('wcn'), wbtn=document.getElementById('wbtn');
+  var composing=false;
+  wta.addEventListener('compositionstart',function(){composing=true;});
+  wta.addEventListener('compositionend',function(){composing=false;});
+  wta.addEventListener('input',function(){
+    wcn.textContent=wta.value.length;
+    wbtn.disabled = wta.value.trim().length===0;
+  });
+  wbtn.addEventListener('click',function(){
+    myLyric = wta.value.trim();
+    if(!myLyric) return;
+    renderLyrics();
+    document.getElementById('write').innerHTML =
+      '<div class="wdone">🌱 당신의 한 마디가 가사에 새겨졌습니다</div>'+
+      '<p class="wh" style="margin:6px 0 0">완성된 노래는 저희 SNS에서 만나보실 수 있습니다.</p>';
+    document.querySelector('.lyr.mine').scrollIntoView({behavior:'smooth',block:'center'});
+  });
+
+  var playing=false;
+  document.getElementById('pbtn').addEventListener('click',function(){
+    var a=document.getElementById('bgm'), eq=document.getElementById('eq'), b=this;
+    if(!playing){
+      var p=a.play(); if(p&&p.catch) p.catch(function(){});
+      playing=true; b.textContent='❚❚'; eq.classList.add('on');
+    }else{ a.pause(); playing=false; b.textContent='▶'; eq.classList.remove('on'); }
+  });
+
+  /* ================= DATA ================= */
+  var TYPES={
+    scenery:{emo:'🌄',name:'경관 복원가',
+      line:'당신은 숲의 경관이 다시 돌아오는 것을 가장 먼저 생각했습니다.',
+      tag:'“여기 진짜 좋다” 소리가 나오는 풍경을 되돌리고 싶은 사람.'},
+    wildlife:{emo:'🐈',name:'서식지 복원가',
+      line:'당신은 야생동물이 다시 살아갈 환경을 가장 먼저 생각했습니다.',
+      tag:'숲은 나무가 아니라, 살아가는 것들의 집이라고 믿는 사람.'},
+    community:{emo:'🍄',name:'공동체 복원가',
+      line:'당신은 지역주민의 삶과 생계가 회복되는 것을 가장 먼저 생각했습니다.',
+      tag:'숲과 함께 살아온 사람들의 평범한 하루까지가 숲이라고 믿는 사람.'},
+    func:{emo:'💧',name:'기능 복원가',
+      line:'당신은 숲의 기능(물·토양·기후)이 회복되는 것을 가장 먼저 생각했습니다.',
+      tag:'눈에 안 보여도 숲이 하던 진짜 일을 아는 사람.'}
+  };
+  var QUIZ=[
+    {q:'숲에 놀러 가면 나는?', s:'가볍게 골라주세요 🌿',
+     a:[['📸 인생샷 명당부터 찾는다','scenery'],
+        ['🐿️ 어! 다람쥐다! 하고 쫓아간다','wildlife'],
+        ['🍚 근처 맛집이랑 시장부터 검색','community'],
+        ['🌬️ 그늘에 앉아 바람 쐬는 게 최고','func']]},
+    {q:'산불 뉴스를 봤을 때<br>가장 먼저 든 생각은?', s:'',
+     a:[['😢 그 예쁘던 풍경이 다 탔겠네','scenery'],
+        ['🦌 거기 살던 동물들은 어디로 갔을까','wildlife'],
+        ['🏘️ 거기 사시던 분들은 어떡하지','community'],
+        ['🌏 이제 여름이 더 더워지겠구나','func']]},
+    {q:'30년 뒤 그 숲에 다시 간다면,<br>가장 보고 싶은 건?', s:'',
+     a:[['🌄 예전처럼 멋진 풍경','scenery'],
+        ['🐈 숲을 지나가는 삵 한 마리','wildlife'],
+        ['🍄 다시 송이버섯 캐는 어르신','community'],
+        ['🌳 시원한 그늘과 맑은 계곡물','func']]}
+  ];
+  var CASES={
+    c1:{tag:'CASE 01 · 당신이 배정받은 땅',
+      desc:'불길이 너무 강했습니다. <b>씨앗 공급원이 모두 타버렸고, 토양의 유기물도 소실</b>되었습니다. 흙은 물을 잘 머금지 못하는 상태입니다.'},
+    c2:{tag:'CASE 02 · 당신이 배정받은 땅',
+      desc:'피해는 컸지만 <b>흙 속에 씨앗이 남아 있고, 토양의 영양분도 살아</b> 있습니다. 땅속에서는 이미 어린나무가 준비 중입니다.'}
+  };
+  var OUT={
+    c1:{
+      natural:{v:'fail',t:'30년을 기다렸지만,\n숲은 돌아오지 않았습니다',
+        tl:[['10년','풀만 듬성듬성 올라옵니다. 새 씨앗이 오지 않습니다.','b'],
+            ['20년','여전히 헐벗은 땅. 비가 올 때마다 흙이 쓸려 내려갑니다.','b'],
+            ['30년','나무가 자리 잡지 못했습니다. 2차 피해만 커졌습니다.','b']],
+        ex:'기다림은 <b>씨앗이 남아 있을 때만</b> 작동합니다. 이 땅은 사람의 개입이 필요했습니다.'},
+      single:{v:'half',t:'나무는 섰지만,\n숲은 아직입니다',
+        tl:[['10년','심은 나무가 빠르게 자랍니다. 겉보기엔 초록입니다.','h'],
+            ['20년','같은 나무만 늘어섰습니다. 병해충 한 번에 크게 흔들립니다.','h'],
+            ['30년','나무는 있지만, 새도 동물도 돌아오지 않았습니다.','h']],
+        ex:'한 종만 심으면 <b>생물다양성이 낮아</b> 병해충과 외래종에 취약합니다. 나무가 있다고 숲인 것은 아닙니다.'},
+      survey:{v:'ok',t:'개입이 필요한 땅이었고,\n조건을 보고 개입했습니다',
+        tl:[['10년','주변 식생에 맞는 종들이 자리를 잡습니다.','g'],
+            ['20년','키 큰 나무와 낮은 덤불로 층이 생기고, 새가 돌아옵니다.','g'],
+            ['30년','토양이 물을 머금기 시작하고, 숲의 기능이 회복됩니다.','g']],
+        ex:'인공복원의 핵심은 <b>심는 것이 아니라 조사</b>입니다. 어떤 땅인지 먼저 물었기에 가능했습니다.'}
+    },
+    c2:{
+      natural:{v:'ok',t:'가장 느리지만,\n가장 건강한 숲이 돌아왔습니다',
+        tl:[['10년','흙 속에 남아 있던 씨앗에서 어린나무가 올라옵니다.','g'],
+            ['20년','이 땅에 원래 살던 종들이 스스로 자리를 잡습니다.','g'],
+            ['30년','사람이 심지 않은, 이 땅에 가장 맞는 숲이 되었습니다.','g']],
+        ex:'30년이 걸리지만 <b>가장 건강하고, 비용도 가장 적게</b> 듭니다. 기다림도 하나의 복원입니다.'},
+      single:{v:'fail',t:'이미 돌아오고 있던 숲을,\n밀어버렸습니다',
+        tl:[['10년','중장비가 들어와 땅을 정리합니다. 심은 나무가 자랍니다.','b'],
+            ['20년','흙 속에서 자라던 어린나무들은 이 과정에서 사라졌습니다.','b'],
+            ['30년','원래 있던 다양한 종 대신, 심은 한 종만 남았습니다.','b']],
+        ex:'이 땅은 <b>이미 회복이 시작된 상태</b>였습니다. 개입이 회복을 덮어썼습니다.'},
+      survey:{v:'okbut',t:'성공했습니다.\n다만 묻고 싶습니다',
+        tl:[['10년','조사한 종을 심어 빠르게 자리를 잡습니다.','g'],
+            ['20년','다양한 층이 생기고 생태계가 회복됩니다.','g'],
+            ['30년','건강한 숲이 되었습니다. 비용과 장비가 투입되었습니다.','h']],
+        ex:'결과는 좋았습니다. 다만 이 땅은 <b>기다리는 것만으로도 같은 곳에 닿을 수 있었습니다.</b> 인간이 어디까지 개입해야 하는가 — 전문가들이 늘 하는 고민입니다.'}
+    }
+  };
+  var VERDICT={fail:{label:'복원 실패',color:'#c4552e'},half:{label:'절반의 회복',color:'#c99a44'},
+    ok:{label:'복원 성공',color:'#5f8557'},okbut:{label:'성공, 그러나',color:'#7a9b5e'}};
+  var CROSS={
+    fail:'그런데 이 땅에서 당신의 선택은, 30년 뒤에도 그 바람에 닿지 못했습니다.',
+    half:'나무는 돌아왔습니다. 그러나 당신이 가장 먼저 바랐던 그것은, 아직 돌아오지 않았습니다.',
+    ok:'이 땅의 조건에서, 당신의 선택은 그 바람에 닿았습니다.',
+    okbut:'당신의 바람에는 닿았습니다. 다만 이 땅은, 기다리는 것만으로도 같은 곳에 닿을 수 있었습니다.'
+  };
+
+  /* ================= FLOW ================= */
+  var card=document.getElementById('card'), steps=document.getElementById('steps').children;
+  var S={type:null,cs:null,choice:null,msg:''}, qi=0, score={scenery:0,wildlife:0,community:0,func:0};
+
+  function mark(n){ for(var i=0;i<steps.length;i++) steps[i].className = i<n ? 'on':''; }
+  function go(fn){ card.classList.remove('fade'); void card.offsetWidth; card.classList.add('fade'); fn(); }
+  function bind(sel,fn){ var e=card.querySelectorAll(sel);
+    for(var i=0;i<e.length;i++){(function(b){b.addEventListener('click',function(){fn(b);});})(e[i]);} }
+
+  function quiz(){
+    if(qi>=QUIZ.length) return go(typeCard);
+    mark(qi+1);
+    var q=QUIZ[qi];
+    card.innerHTML =
+      '<div class="kicker">복원가 유형 진단 · '+(qi+1)+' / '+QUIZ.length+'</div>'+
+      '<div class="qtext">'+q.q+'</div>'+
+      (q.s?'<div class="qsub">'+q.s+'</div>':'<div style="height:14px"></div>')+
+      '<div class="opts">'+q.a.map(function(o){
+        return '<button class="opt" data-t="'+o[1]+'">'+o[0]+'</button>';
+      }).join('')+'</div>';
+    bind('[data-t]',function(b){ score[b.getAttribute('data-t')]++; qi++; go(quiz); });
+  }
+
+  function typeCard(){
+    mark(3);
+    var best='scenery', mx=-1;
+    for(var k in score){ if(score[k]>mx){ mx=score[k]; best=k; } }
+    S.type=best;
+    var t=TYPES[best];
+    card.innerHTML =
+      '<div class="tcard"><div class="tk">당신의 복원가 유형</div>'+
+      '<div class="temo">'+t.emo+'</div>'+
+      '<div class="tname">'+t.name+'</div><div class="ttag">'+t.tag+'</div></div>'+
+      '<div class="btns"><button class="btn primary" data-go="1">'+t.name+'로 현장에 가기</button>'+
+      '<button class="btn" data-again="1">다시 진단</button></div>';
+    bind('[data-go]',function(){ go(caseView); });
+    bind('[data-again]',function(){ qi=0; score={scenery:0,wildlife:0,community:0,func:0}; go(quiz); });
+  }
+
+  function caseView(){
+    mark(4);
+    S.cs = Math.random()<0.5 ? 'c1':'c2';
+    var c=CASES[S.cs], t=TYPES[S.type];
+    card.innerHTML =
+      '<div class="kicker">STEP 1 · 현장 도착</div>'+
+      '<div class="qtext">'+t.name+'님,<br>산불 현장에 도착했습니다.</div>'+
+      '<div class="qsub">모든 산불 피해지가 같지는 않습니다. 이 땅부터 살펴보세요.</div>'+
+      '<div class="case '+S.cs+'"><div class="tag">'+c.tag+'</div><div class="desc">'+c.desc+'</div></div>'+
+      '<div class="opts"><button class="opt" data-next="1" style="text-align:center;font-weight:700">살펴봤습니다 · 복원 방법 정하기</button></div>';
+    bind('[data-next]',function(){ go(choice); });
+  }
+
+  function choice(){
+    mark(5);
+    card.innerHTML =
+      '<div class="kicker">STEP 2 · 결정</div>'+
+      '<div class="qtext">어떤 복원을 택하시겠습니까?</div>'+
+      '<div class="qsub">'+(S.cs==='c1'?'씨앗도 흙의 양분도 남지 않은 땅입니다.':'흙 속에 씨앗과 양분이 남아 있는 땅입니다.')+'</div>'+
+      '<div class="opts">'+
+        '<button class="opt" data-c="natural">⏳ 자연복원 — 기다린다<small>사람이 손대지 않고, 숲이 스스로 돌아오게 한다</small></button>'+
+        '<button class="opt" data-c="survey">🔍 인공복원 — 조사한 뒤 여러 종을 심는다<small>주변에 원래 살던 나무를 알아보고, 그에 맞게 심는다</small></button>'+
+        '<button class="opt" data-c="single">⚡ 인공복원 — 빨리 자라는 한 종을 심는다<small>가장 빠르게 초록을 되돌린다</small></button>'+
+      '</div>';
+    bind('[data-c]',function(b){ S.choice=b.getAttribute('data-c'); go(result); });
+  }
+
+  function result(){
+    mark(6);
+    var o=OUT[S.cs][S.choice], v=VERDICT[o.v];
+    var rows=o.tl.map(function(r,i){
+      return '<div class="row '+r[2]+'" style="animation-delay:'+(i*0.3+0.1)+'s"><div class="yr">'+r[0]+'</div><div class="txt">'+r[1]+'</div></div>';
+    }).join('');
+    card.innerHTML =
+      '<div class="verdict"><span class="vlabel" style="background:'+v.color+'">'+v.label+'</span>'+
+      '<div class="vtitle">'+o.t.replace(/\n/g,'<br>')+'</div></div>'+
+      '<div class="tl">'+rows+'</div>'+
+      '<div class="explain">'+o.ex+'</div>'+
+      '<div class="btns"><button class="btn primary" data-go="1">이 결과가 나에게 뜻하는 것</button></div>';
+    bind('[data-go]',function(){ go(cross); });
+  }
+
+  function cross(){
+    var o=OUT[S.cs][S.choice], t=TYPES[S.type];
+    card.innerHTML =
+      '<div class="kicker">'+t.emo+' '+t.name+' × 이 땅의 조건</div>'+
+      '<div class="cross"><div class="cv">당신의 유형이 바라던 것</div>'+
+      '<div class="cx">'+t.line+'<br><br>'+CROSS[o.v]+'</div></div>'+
+      '<div class="axiom">복원 방법에 <b>정답은 없습니다.</b><br>그러나 조건을 <b>묻지 않고 내린 결정은 오답</b>입니다.</div>'+
+      '<div class="btns"><button class="btn primary" data-go="1">초록 에너지 나누기</button>'+
+      '<button class="btn" data-again="1">다른 땅에서 다시</button></div>';
+    bind('[data-go]',function(){ go(msgView); });
+    bind('[data-again]',function(){ restart(); });
+  }
+
+  function msgView(){
+    var t=TYPES[S.type];
+    card.innerHTML =
+      '<div class="kicker">'+t.emo+' '+t.name+'님의 초록 에너지</div>'+
+      '<div class="msg"><label>오늘 무엇을 느끼셨나요?</label>'+
+      '<p class="hint">티켓에 새겨 드립니다. 건너뛰셔도 괜찮아요.</p>'+
+      '<textarea class="ta" id="ta" maxlength="60" placeholder="예: 나무 한 그루가 그늘 하나라는 걸 처음 알았어요."></textarea>'+
+      '<div class="cnt"><span id="cn">0</span> / 60</div></div>'+
+      '<div class="btns"><button class="btn primary" id="submit">내 티켓 받기</button></div>'+
+      '<button class="skip" id="skip">한 마디 없이 티켓 받기</button>';
+    var ta=document.getElementById('ta'), cn=document.getElementById('cn');
+    ta.addEventListener('input',function(){ cn.textContent=ta.value.length; });
+    document.getElementById('submit').addEventListener('click',function(){
+      S.msg=ta.value.trim(); issue();
+    });
+    document.getElementById('skip').addEventListener('click',function(){ S.msg=''; issue(); });
+  }
+
+  function issue(){
+    buildTicket();
+    document.getElementById('tick').scrollIntoView({behavior:'smooth',block:'start'});
+  }
+
+  function restart(){
+    S={type:null,cs:null,choice:null,msg:''}; qi=0; score={scenery:0,wildlife:0,community:0,func:0};
+    document.getElementById('tick').style.display='none';
+    document.getElementById('app').scrollIntoView({behavior:'smooth',block:'start'});
+    setTimeout(function(){ go(quiz); },300);
+  }
+
+  /* ---------- ticket ---------- */
+  function buildTicket(){
+    var t=TYPES[S.type];
+    var no='NO. '+(Math.floor(Math.random()*9000)+1000);
+    var msgRow = S.msg
+      ? '<div class="trow"><div class="tl2">나의 한 줄</div><div class="tm">“'+esc(S.msg)+'”</div></div>'
+      : '';
+    document.getElementById('ticket').innerHTML =
+      '<div class="ticket__top"><div class="brand">SEOUL FOREST · 08.08</div>'+
+        '<div class="tt">보이지 않는 숲</div><div class="no">'+no+'</div></div>'+
+      '<div class="perf"><i></i></div>'+
+      '<div class="ticket__body">'+
+        '<div class="trow"><div class="tl2">나의 복원가 유형</div><div class="tv">'+t.emo+' '+t.name+'</div></div>'+
+        msgRow+
+      '</div>'+
+      '<div class="staff"><div class="sn">이 화면을 부스 스태프에게 보여주세요.<br>스태프가 확인 후 버튼을 눌러드립니다.</div>'+
+      '<button class="sbtn" id="sbtn">인증 완료</button></div>';
+    document.getElementById('tick').style.display='block';
+    document.getElementById('sbtn').addEventListener('click',function(){
+      if(this.classList.contains('done')) return;
+      this.classList.add('done'); this.textContent='✓ 인증 완료되었습니다';
+    });
+  }
+
+  quiz();
+})();
+</script>
+</body>
+</html>
