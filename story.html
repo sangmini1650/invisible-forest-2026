@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>우푸와 함께하는 산림복원 스토리 · 2026 그린캠프 2조</title>
+<meta name="description" content="Forest Restorer가 되어 우푸와 함께 산불 피해지의 숲을 되살리는 인터랙티브 스토리" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200;300;500;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+<style>
+  :root{
+    --char:#141009; --char2:#1e1913;
+    --bone:#f0eadc; --bone-dim:#b8ae9a; --dim2:#8b8171;
+    --cream:#f7f2e7; --cream2:#efe8d8; --ink:#2b2419;
+    --ember:#c4552e; --ember-soft:#e29268;
+    --moss:#5f8557; --moss-deep:#37563a; --growth:#a6c887; --growth-soft:#cbe0b4;
+    --sky:#a9cbd2; --burnt:#3a2b22;
+    --serif:'Noto Serif KR', serif;
+    --sans:'Pretendard', system-ui, -apple-system, sans-serif;
+    --p2:0; --p5:0; --p9:0;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--sans);background:var(--char);color:var(--bone);line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  .wrap{max-width:640px;margin:0 auto;padding:0 22px}
+  ::selection{background:var(--growth);color:var(--ink)}
+  img,svg{display:block;max-width:100%}
+
+  .badge{position:fixed;top:0;left:0;right:0;z-index:60;display:flex;justify-content:center;pointer-events:none}
+  .badge span{margin-top:11px;font-size:11px;letter-spacing:.14em;color:var(--bone-dim);
+    background:rgba(20,16,9,.5);border:1px solid rgba(240,234,220,.14);backdrop-filter:blur(10px);padding:6px 15px;border-radius:999px}
+  .badge b{color:var(--bone);font-weight:600}
+  .backlink{position:fixed;top:12px;left:16px;z-index:61;font-size:11.5px;color:var(--bone-dim);text-decoration:none;
+    background:rgba(20,16,9,.5);border:1px solid rgba(240,234,220,.14);backdrop-filter:blur(10px);padding:8px 13px;border-radius:999px;transition:color .2s,border-color .2s}
+  .backlink:hover{color:var(--bone);border-color:var(--growth)}
+
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .9s cubic-bezier(.2,.7,.3,1),transform .9s cubic-bezier(.2,.7,.3,1)}
+  .reveal.in{opacity:1;transform:none}
+  .sechead{text-align:center;padding:100px 22px 6px}
+  .sechead .k{font-size:11px;letter-spacing:.3em;font-weight:600;margin-bottom:16px;color:var(--growth)}
+  .sechead h2{font-family:var(--serif);font-size:clamp(21px,5.2vw,30px);font-weight:300;line-height:1.5;color:var(--bone)}
+  .sechead h2 b{font-weight:700}
+
+  .btn{font-family:var(--sans);font-size:13.5px;font-weight:600;padding:13px 24px;border-radius:11px;cursor:pointer;border:1px solid rgba(240,234,220,.18);background:transparent;color:var(--bone);transition:border-color .18s,background .18s,transform .18s;display:inline-block}
+  .btn:hover{border-color:var(--growth);background:rgba(166,200,135,.08);transform:translateY(-1px)}
+  .btn.primary{background:var(--moss-deep);color:#fff;border-color:transparent}
+  .btn.primary:hover{background:var(--moss)}
+  .btn:disabled{opacity:.35;cursor:not-allowed;transform:none}
+  .btnrow{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-top:30px}
+
+  /* ===== STORY HERO ===== */
+  .shero{position:relative;height:100dvh;min-height:560px;display:flex;align-items:center;justify-content:center;overflow:hidden;
+    background:linear-gradient(180deg,#1a130c 0%,#3a2416 46%,#5c3620 78%,#7a4526 100%)}
+  .shero::before{content:"";position:absolute;inset:0;background:
+    radial-gradient(ellipse 70% 40% at 30% 18%,rgba(226,146,104,.18),transparent 60%),
+    radial-gradient(ellipse 60% 30% at 75% 10%,rgba(240,234,220,.08),transparent 60%)}
+  .shero__content{position:relative;z-index:2;text-align:center;padding:0 26px;max-width:600px}
+  .shero__eyebrow{font-size:11px;letter-spacing:.36em;color:var(--ember-soft);margin-bottom:20px;font-weight:600}
+  .shero__title{font-family:var(--serif);font-weight:300;font-size:clamp(26px,7vw,46px);line-height:1.42;color:var(--bone);letter-spacing:-.01em}
+  .shero__title b{font-weight:700;color:#fff}
+  .shero__sub{margin-top:22px;font-size:clamp(13px,3.2vw,15px);color:var(--bone-dim);font-weight:300;line-height:1.8}
+  .shero .scroll-cue{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--bone-dim);font-size:10px;letter-spacing:.24em;cursor:pointer;background:none;border:none;font-family:var(--sans)}
+  .shero .scroll-cue i{display:block;width:1px;height:32px;background:linear-gradient(var(--bone-dim),transparent);animation:drop 2.2s ease-in-out infinite}
+  @keyframes drop{0%,100%{transform:scaleY(.5);transform-origin:top;opacity:.4}50%{transform:scaleY(1);opacity:1}}
+
+  /* ===== WOOPU ===== */
+  .woopu-stage{display:flex;justify-content:center;margin:0 auto}
+  .woopu-stage svg{width:150px;height:auto;overflow:visible}
+  .woopu-arm-r{transform-origin:96px 118px;animation:none}
+  .woopu-arm-l{transform-origin:56px 118px}
+  .woopu.pose-wave .woopu-arm-r{animation:wave 1.6s ease-in-out 2}
+  @keyframes wave{0%,100%{transform:rotate(0deg)}30%{transform:rotate(-46deg)}55%{transform:rotate(-18deg)}80%{transform:rotate(-40deg)}}
+  .woopu.pose-victory .woopu-arm-r{transform:rotate(-58deg)}
+  .woopu.pose-victory .woopu-arm-l{transform:rotate(58deg)}
+  .woopu.pose-worried .woopu-arm-r{transform:rotate(-92deg) translate(2px,-4px)}
+  .woopu.pose-worried .woopu-arm-l{transform:rotate(92deg) translate(-2px,-4px)}
+  .woopu.pose-point .woopu-arm-r{transform:rotate(-30deg)}
+  .woopu.pose-tool .woopu-arm-r{transform:rotate(-22deg)}
+  .woopu.pose-relieved .woopu-arm-r{transform:rotate(-8deg)}
+  .woopu.pose-relieved .woopu-arm-l{transform:rotate(8deg)}
+  .woopu-bob{animation:bob 3.2s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+
+  .bubbles{max-width:380px;margin:26px auto 0;display:flex;flex-direction:column;gap:10px}
+  .bubble{background:var(--char2);border:1px solid rgba(240,234,220,.12);border-radius:16px;border-top-left-radius:4px;padding:14px 18px;font-size:14.5px;color:var(--bone);line-height:1.7;font-weight:300;text-align:left}
+  .bubble b{color:var(--growth);font-weight:700}
+
+  /* ===== SCENE 1 : 우푸 등장 ===== */
+  .scene1{background:var(--char);padding:90px 0 100px;text-align:center}
+
+  /* ===== SCENE 2 / 5 / 9 : 스크럽 씬 공통 ===== */
+  .scrub-outer{position:relative}
+  .scrub-stage{position:sticky;top:0;height:100dvh;overflow:hidden;display:flex;align-items:center;justify-content:center}
+  .scrub-bg{position:absolute;inset:0;width:100%;height:100%}
+  .scrub-overlay{position:relative;z-index:3;text-align:center;padding:0 26px;max-width:560px}
+  .scrub-overlay p{font-family:var(--serif);font-size:clamp(18px,4.6vw,25px);line-height:1.65;color:var(--bone);font-weight:300;text-shadow:0 2px 24px rgba(0,0,0,.5)}
+  .scrub-overlay p b{font-weight:700;color:#fff}
+  .scrub-overlay p+p{margin-top:14px}
+
+  /* scene2 : 산불 재해 지역 도착 */
+  .s2-outer{height:230vh}
+  .s2-veil{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(14,11,6,.55),rgba(14,11,6,.15) 40%,rgba(14,11,6,.15) 60%,rgba(14,11,6,.7))}
+  .s2-tag{position:absolute;top:22px;left:50%;transform:translateX(-50%);z-index:2;font-size:11px;letter-spacing:.1em;color:var(--growth-soft);
+    background:rgba(20,16,9,.55);border:1px solid rgba(240,234,220,.16);padding:7px 14px;border-radius:999px;display:flex;align-items:center;gap:6px}
+  .s2-car{position:absolute;bottom:30%;left:0;z-index:2;width:70px;transform:translateX(calc(-40px + var(--p2) * (100vw - 20px))) scaleX(-1)}
+  .smoke{position:absolute;border-radius:50%;background:rgba(200,196,188,.5);filter:blur(6px)}
+  .smoke1{width:60px;height:60px;top:22%;left:38%;opacity:calc(var(--p2) * 1.6 - .3)}
+  .smoke2{width:44px;height:44px;top:16%;left:52%;opacity:calc(var(--p2) * 1.4 - .25)}
+  .smoke3{width:36px;height:36px;top:26%;left:66%;opacity:calc(var(--p2) * 1.3 - .2)}
+  .s2-woopu{position:absolute;bottom:14%;left:50%;z-index:2;transform:translate(-50%,calc(30px - var(--p2) * 30px));opacity:var(--p2)}
+  .s2-overlay{position:absolute;bottom:16%;left:0;right:0;z-index:3;width:100%;text-align:center;padding:0 26px}
+  .s2-line1{opacity:calc(var(--p2) * 3 - 1)}
+  .s2-line2{opacity:calc(var(--p2) * 3 - 2)}
+
+  /* scene5 : 다음 산으로 이동 */
+  .s5-outer{height:200vh}
+  .s5-bg{background:linear-gradient(180deg,rgba(58,43,34,1),rgba(58,43,34,1))}
+  .s5-car{position:absolute;bottom:32%;left:calc(8% + var(--p5) * 78%);z-index:2;width:64px}
+  .s5-text{opacity:calc(var(--p5) * 2.4 - .6)}
+
+  /* scene9 : 10년 후 */
+  .s9-outer{height:260vh}
+  .s9-animal{position:absolute;opacity:0;transition:none}
+  .s9-a1{top:18%;left:14%;width:34px;opacity:calc(var(--p9) * 4 - 1.2)}
+  .s9-a2{top:24%;right:16%;width:26px;opacity:calc(var(--p9) * 4 - 1.6)}
+  .s9-a3{bottom:20%;left:20%;width:60px;opacity:calc(var(--p9) * 4 - 2.0)}
+  .s9-a4{bottom:16%;right:18%;width:40px;opacity:calc(var(--p9) * 4 - 2.4)}
+  .s9-text{opacity:calc(var(--p9) * 2.2 - .5)}
+  .s9-mission{opacity:calc(var(--p9) * 3 - 1.9);margin-top:22px}
+
+  /* ===== SECTION 3 / 6 : 체크리스트 ===== */
+  .checklist-sec{background:var(--char);padding:20px 0 96px}
+  .checklist{max-width:420px;margin:36px auto 0;padding:0 22px;display:flex;flex-direction:column;gap:10px}
+  .chk{display:flex;align-items:center;gap:12px;background:var(--char2);border:1px solid rgba(240,234,220,.1);border-radius:13px;padding:14px 16px;
+    opacity:0;transform:translateX(-14px);transition:opacity .6s ease,transform .6s ease}
+  .checklist.in .chk{opacity:1;transform:none}
+  .checklist.in .chk:nth-child(1){transition-delay:.05s}
+  .checklist.in .chk:nth-child(2){transition-delay:.25s}
+  .checklist.in .chk:nth-child(3){transition-delay:.45s}
+  .checklist.in .chk:nth-child(4){transition-delay:.65s}
+  .chk .mk{width:20px;height:20px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-size:11px;color:#fff}
+  .chk.warn .mk{background:var(--ember)}
+  .chk:not(.warn) .mk{background:var(--moss)}
+  .chk span{font-size:14.5px;color:var(--bone);font-weight:400}
+  .chk.warn span{color:var(--ember-soft);font-weight:600}
+  .chk-final{max-width:420px;margin:22px auto 0;padding:16px 22px;text-align:center;font-family:var(--serif);font-size:17px;color:var(--growth);font-weight:500;
+    opacity:0;transition:opacity .7s ease .8s}
+  .checklist.in ~ .chk-final{opacity:1}
+
+  /* ===== SECTION 4 / 7 : 방법 카드 ===== */
+  .method-sec{background:var(--char);padding:20px 0 100px}
+  .rcards{max-width:560px;margin:36px auto 0;padding:0 22px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  @media(max-width:460px){.rcards{grid-template-columns:1fr}}
+  .rcards.g3{grid-template-columns:repeat(3,1fr)}
+  @media(max-width:640px){.rcards.g3{grid-template-columns:1fr}}
+  .rcard{background:var(--char2);border:1px solid rgba(240,234,220,.1);border-radius:16px;padding:20px 18px;cursor:pointer;transition:border-color .2s,transform .2s;text-align:left}
+  .rcard:hover{border-color:var(--growth);transform:translateY(-2px)}
+  .rcard.done{border-color:var(--moss);background:linear-gradient(160deg,rgba(95,133,87,.16),rgba(95,133,87,.04))}
+  .rcard .rn{font-size:11px;letter-spacing:.1em;color:var(--growth);font-weight:700;margin-bottom:8px}
+  .rcard .rt{font-family:var(--serif);font-size:17px;font-weight:700;color:#fff;margin-bottom:10px}
+  .rcard .mini{height:56px;border-radius:10px;background:#3a2b22;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:10px;transition:background 1s ease;position:relative;overflow:hidden}
+  .rcard.done .mini{background:#2c3d24}
+  .rcard .rd{font-size:12.5px;color:var(--bone-dim);line-height:1.6;font-weight:300;min-height:34px}
+  .rcard .rd b{color:var(--growth-soft)}
+  .rcard .seed{transition:transform .6s cubic-bezier(.3,1.6,.5,1),opacity .5s}
+  .rcard.done .seed{transform:scale(1.3) translateY(-2px)}
+  .logs{display:flex;gap:3px;align-items:flex-end}
+  .logs i{display:block;width:9px;height:6px;background:#8a6a45;border-radius:2px;transform:translateY(30px);opacity:0;transition:transform .5s ease,opacity .5s ease}
+  .rcard.done .logs i:nth-child(1){transition-delay:.05s} .rcard.done .logs i:nth-child(2){transition-delay:.18s} .rcard.done .logs i:nth-child(3){transition-delay:.31s}
+  .rcard.done .logs i{transform:translateY(0);opacity:1}
+  .rcard .grow-a{font-size:20px;transition:opacity .35s}
+  .rcard .grow-b{font-size:24px;opacity:0;position:absolute;transition:opacity .35s}
+  .rcard.done .grow-a{opacity:0}
+  .rcard.done .grow-b{opacity:1}
+  .fence{display:flex;gap:2px}
+  .fence i{display:block;width:4px;height:0;background:var(--bone-dim);border-radius:1px;transition:height .4s ease}
+  .fence i:nth-child(2){height:0}
+  .rcard:hover .fence i{height:26px}
+  .rcard:hover .fence i:nth-child(1){transition-delay:0s} .rcard:hover .fence i:nth-child(2){transition-delay:.08s} .rcard:hover .fence i:nth-child(3){transition-delay:.16s} .rcard:hover .fence i:nth-child(4){transition-delay:.24s}
+  .grow3{display:flex;gap:4px;align-items:center}
+  .grow3 span{opacity:.25;transition:opacity .3s,transform .3s;transform:scale(.85)}
+  .rcard:hover .grow3 span{opacity:1;transform:scale(1)}
+  .rcard:hover .grow3 span:nth-child(1){transition-delay:0s} .rcard:hover .grow3 span:nth-child(2){transition-delay:.15s} .rcard:hover .grow3 span:nth-child(3){transition-delay:.3s}
+
+  .progress-wrap{max-width:420px;margin:28px auto 0;padding:0 22px}
+  .progress-bar{height:8px;border-radius:999px;background:rgba(240,234,220,.1);overflow:hidden}
+  .progress-bar i{display:block;height:100%;width:0%;background:linear-gradient(90deg,var(--moss),var(--growth));border-radius:999px;transition:width .6s cubic-bezier(.3,1,.4,1)}
+  .progress-label{text-align:center;font-size:12px;color:var(--dim2);margin-top:9px;letter-spacing:.04em}
+  .done-msg{max-width:420px;margin:22px auto 0;text-align:center;font-family:var(--serif);font-size:18px;color:var(--growth);font-weight:600;
+    opacity:0;transform:translateY(8px);transition:opacity .5s ease,transform .5s ease}
+  .done-msg.show{opacity:1;transform:none}
+
+  .sim-cta{max-width:560px;margin:34px auto 0;padding:20px 22px;border-radius:16px;background:linear-gradient(150deg,rgba(166,200,135,.1),rgba(166,200,135,.02));
+    border:1px dashed rgba(166,200,135,.35);text-align:center}
+  .sim-cta .sc-k{font-size:11px;letter-spacing:.14em;color:var(--growth);font-weight:700;margin-bottom:8px}
+  .sim-cta p{font-size:13.5px;color:var(--bone-dim);font-weight:300;margin-bottom:14px;line-height:1.7}
+  .sim-cta a.btn{text-decoration:none}
+
+  /* ===== SECTION 8 : 복원 완료 ===== */
+  .scene8{background:linear-gradient(180deg,var(--char),#1a2416);padding:100px 0 100px;text-align:center}
+
+  /* ===== FINAL : 나뭇잎 ===== */
+  .finale{background:#101a0d;padding:90px 0 120px;text-align:center;position:relative;overflow:hidden}
+  .mission-badge{display:inline-flex;flex-direction:column;align-items:center;gap:6px;border:1.5px solid var(--growth);border-radius:16px;padding:20px 30px;margin:0 auto}
+  .mission-badge .mb-top{font-size:10.5px;letter-spacing:.28em;color:var(--growth-soft);font-weight:700}
+  .mission-badge .mb-main{font-family:var(--serif);font-size:clamp(24px,6vw,34px);font-weight:700;color:#fff;letter-spacing:-.01em}
+  .mission-badge .mb-sub{font-size:11px;color:var(--bone-dim);letter-spacing:.08em}
+
+  .tree-wrap{position:relative;max-width:420px;margin:56px auto 0}
+  .leaf-count{font-size:12.5px;color:var(--growth-soft);margin-top:16px;letter-spacing:.02em}
+  .leaf-form{max-width:420px;margin:22px auto 0;display:flex;gap:8px;padding:0 22px}
+  .leaf-form input{flex:1;font-family:var(--sans);font-size:13.5px;padding:12px 14px;border-radius:11px;border:1px solid rgba(240,234,220,.18);background:rgba(240,234,220,.06);color:var(--bone)}
+  .leaf-form input::placeholder{color:var(--dim2)}
+  .leaf-form input:focus{outline:none;border-color:var(--growth)}
+  .leaf-form button{white-space:nowrap}
+  .leaf{transform-origin:center;animation:leafpop .5s cubic-bezier(.3,1.7,.4,1)}
+  @keyframes leafpop{from{opacity:0;transform:scale(0) rotate(-30deg)}to{opacity:1;transform:scale(1) rotate(var(--rot,0deg))}}
+  .foot-note{margin-top:70px;color:var(--dim2);font-size:11.5px;font-weight:300}
+
+  @media(prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .reveal{transition:none;opacity:1;transform:none}
+    .checklist .chk{transition:none;opacity:1;transform:none}
+    .woopu-arm-r,.woopu-arm-l{animation:none!important}
+  }
+</style>
+</head>
+<body>
+
+<a class="backlink" href="index.html">← 처음으로</a>
+<div class="badge"><span>2026 그린캠프 · <b>Forest Restorer Mission</b></span></div>
+
+<!-- ===== HERO ===== -->
+<header class="shero">
+  <div class="shero__content">
+    <div class="shero__eyebrow">보이지 않는 숲 · 스페셜 스토리</div>
+    <h1 class="shero__title">우푸와 함께,<br><b>숲을 되살리는 30일</b></h1>
+    <p class="shero__sub">당신은 오늘부터 <b style="color:#fff">Forest Restorer</b>입니다.<br>스크롤을 내려 미션을 시작해 주세요.</p>
+  </div>
+  <button class="scroll-cue" data-scroll="#s1">스크롤<i></i></button>
+</header>
+
+<!-- ===== SECTION 1 : 우푸 등장 ===== -->
+<section id="s1" class="scene1">
+  <div class="wrap">
+    <div class="woopu-stage reveal" id="woopuStage1"></div>
+    <div class="bubbles">
+      <p class="bubble reveal">안녕! 나는 <b>복원가 우푸</b>야!</p>
+      <p class="bubble reveal">안동 산불 재해 지역과 울진 산불 재해 지역에<br>큰 산불이 발생했어.</p>
+      <p class="bubble reveal">우리 함께 숲을 살리러 가볼까?</p>
+    </div>
+    <div class="btnrow reveal">
+      <button class="btn primary" data-scroll="#s2">출동하기</button>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION 2 : 산불 재해 지역 도착 (스크럽) ===== -->
+<div class="scrub-outer s2-outer" data-scrub="p2" id="s2">
+  <div class="scrub-stage">
+    <svg class="scrub-bg" viewBox="0 0 800 500" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+      <defs>
+        <linearGradient id="burntSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#241a12"/><stop offset="55%" stop-color="#4a3222"/><stop offset="100%" stop-color="#6b3f26"/></linearGradient>
+      </defs>
+      <rect width="800" height="500" fill="url(#burntSky)"/>
+      <path d="M0,330 Q200,290 400,320 T800,300 L800,500 L0,500 Z" fill="#1c130c"/>
+      <g stroke="#100c07" stroke-width="3" fill="none" opacity=".9">
+        <path d="M90,330 L90,250 M90,270 L106,250 M90,285 L74,265"/>
+        <path d="M150,330 L150,240 M150,262 L168,240 M150,280 L132,258"/>
+        <path d="M230,330 L230,255 M230,275 L246,255"/>
+        <path d="M610,330 L610,245 M610,266 L628,245 M610,284 L592,262"/>
+        <path d="M680,330 L680,258 M680,278 L696,258"/>
+        <path d="M730,330 L730,240 M730,262 L748,240 M730,280 L712,258"/>
+      </g>
+      <path d="M0,420 Q400,392 800,412 L800,500 L0,500 Z" fill="#241a12"/>
+    </svg>
+    <div class="s2-veil"></div>
+    <div class="s2-tag">📍 산불 재해 지역</div>
+    <img class="s2-car" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 60'%3E%3Cpath d='M8,42 L14,26 Q18,20 28,20 L64,20 Q74,20 78,28 L92,42 L92,50 L8,50 Z' fill='%23415e34'/%3E%3Crect x='30' y='24' width='30' height='14' rx='3' fill='%23bcd7c6'/%3E%3Ccircle cx='26' cy='50' r='9' fill='%23111'/%3E%3Ccircle cx='74' cy='50' r='9' fill='%23111'/%3E%3Ccircle cx='26' cy='50' r='4' fill='%23555'/%3E%3Ccircle cx='74' cy='50' r='4' fill='%23555'/%3E%3C/svg%3E" alt="" aria-hidden="true" />
+    <div class="smoke smoke1"></div>
+    <div class="smoke smoke2"></div>
+    <div class="smoke smoke3"></div>
+    <div class="s2-woopu" id="woopuStage2"></div>
+    <div class="s2-overlay">
+      <p class="s2-line1" style="font-family:var(--serif);font-size:clamp(17px,4.4vw,23px);color:#fff;text-shadow:0 2px 20px rgba(0,0,0,.6)">산이 검게 <b>불타버렸어...</b></p>
+      <p class="s2-line2" style="font-family:var(--serif);font-size:clamp(14px,3.6vw,17px);color:var(--bone-dim);margin-top:10px">하지만 모든 숲이 같은 방법으로<br>복원되는 것은 아니야.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SECTION 3 : 인공복원이 필요한 이유 ===== -->
+<section id="s3" class="checklist-sec">
+  <div class="sechead reveal">
+    <div class="k">CHECK · 이 숲의 상태</div>
+    <h2>인공복원이<br><b>필요한 이유</b></h2>
+  </div>
+  <div class="checklist" id="checklistA">
+    <div class="chk"><span class="mk">✕</span><span>살아있는 나무가 없어</span></div>
+    <div class="chk"><span class="mk">✕</span><span>살아있는 뿌리도 없어</span></div>
+    <div class="chk"><span class="mk">✕</span><span>토양에 영양분도 없어</span></div>
+    <div class="chk warn"><span class="mk">🚨</span><span>씨앗을 공급할 나무도 없어</span></div>
+  </div>
+  <p class="chk-final">이곳은 사람의 도움이 꼭 필요해!</p>
+  <div class="btnrow">
+    <button class="btn primary" data-scroll="#s4">복원을 시작해볼까?</button>
+  </div>
+</section>
+
+<!-- ===== SECTION 4 : 인공복원 방법 ===== -->
+<section id="s4" class="method-sec">
+  <div class="sechead reveal">
+    <div class="k">METHOD · 인공복원 방법</div>
+    <h2>우푸의 <b>복원 도구 4종</b><br>하나씩 눌러 진행해보세요</h2>
+  </div>
+  <div class="rcards" id="cardsA">
+    <div class="rcard" data-step="soil">
+      <div class="rn">STEP 1</div>
+      <div class="rt">토양개량</div>
+      <div class="mini soil-mini">🟫</div>
+      <div class="rd">토양에 <b>영양분</b>을 주자~</div>
+    </div>
+    <div class="rcard" data-step="seedling">
+      <div class="rn">STEP 2</div>
+      <div class="rt">묘목심기</div>
+      <div class="mini"><span class="seed">🌱</span></div>
+      <div class="rd">건강한 <b>묘목</b>을 심어야지~</div>
+    </div>
+    <div class="rcard" data-step="seed">
+      <div class="rn">STEP 3</div>
+      <div class="rt">씨앗뿌리기</div>
+      <div class="mini"><span class="grow-a">🌰</span><span class="grow-b">🌿</span></div>
+      <div class="rd"><b>씨앗</b>을 뿌리자~</div>
+    </div>
+    <div class="rcard" data-step="dam">
+      <div class="rn">STEP 4</div>
+      <div class="rt">사방댐 설치</div>
+      <div class="mini"><div class="logs"><i></i><i></i><i></i><i></i><i></i></div></div>
+      <div class="rd">흙이 쓸려가지 않게 <b>댐</b>을 만들어야 해!</div>
+    </div>
+  </div>
+  <div class="progress-wrap">
+    <div class="progress-bar"><i id="progressA"></i></div>
+    <div class="progress-label" id="progressLabelA">0 / 4 완료</div>
+  </div>
+  <p class="done-msg" id="doneMsgA">🌲 첫 번째 숲의 복원 완료!</p>
+
+  <div class="sim-cta reveal">
+    <div class="sc-k">🎮 더 깊이 체험하고 싶다면</div>
+    <p>실제 데이터를 바탕으로 한 인공복원 시뮬레이션에서<br>당신의 선택이 30년 뒤 숲을 어떻게 바꾸는지 확인해보세요.</p>
+    <a class="btn" href="index.html#app" target="_blank" rel="noopener">실전 시뮬레이션 체험하기 →</a>
+  </div>
+
+  <div class="btnrow">
+    <button class="btn primary" id="toS5" data-scroll="#s5" disabled>다음 산으로 이동</button>
+  </div>
+</section>
+
+<!-- ===== SECTION 5 : 다음 산으로 이동 (스크럽) ===== -->
+<div class="scrub-outer s5-outer" data-scrub="p5" id="s5">
+  <div class="scrub-stage">
+    <svg class="scrub-bg s5-bg" viewBox="0 0 800 500" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+      <defs>
+        <linearGradient id="s5sky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#2a3a20"/><stop offset="100%" stop-color="#4c6b3a"/>
+        </linearGradient>
+      </defs>
+      <rect width="800" height="500" fill="url(#s5sky)"/>
+      <path d="M0,300 Q400,250 800,290 L800,500 L0,500 Z" fill="#25361c"/>
+      <path d="M0,360 Q400,330 800,350 L800,500 L0,500 Z" fill="#182410"/>
+    </svg>
+    <img class="s5-car" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 60'%3E%3Cpath d='M8,42 L14,26 Q18,20 28,20 L64,20 Q74,20 78,28 L92,42 L92,50 L8,50 Z' fill='%23415e34'/%3E%3Crect x='30' y='24' width='30' height='14' rx='3' fill='%23bcd7c6'/%3E%3Ccircle cx='26' cy='50' r='9' fill='%23111'/%3E%3Ccircle cx='74' cy='50' r='9' fill='%23111'/%3E%3C/svg%3E" alt="" aria-hidden="true" />
+    <div class="scrub-overlay s5-text">
+      <p>이번 숲은 <b>조금 다른 모습</b>이야!</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SECTION 6 : 자연복원이 가능한 숲 ===== -->
+<section id="s6" class="checklist-sec">
+  <div class="sechead reveal">
+    <div class="k">CHECK · 이 숲의 상태</div>
+    <h2>여긴 조건이 <b>조금 달라</b></h2>
+  </div>
+  <div class="checklist" id="checklistB">
+    <div class="chk"><span class="mk">✓</span><span>살아있는 나무가 있어</span></div>
+    <div class="chk"><span class="mk">✓</span><span>살아있는 뿌리가 있어</span></div>
+    <div class="chk"><span class="mk">✓</span><span>건강한 토양이 남아있어</span></div>
+    <div class="chk"><span class="mk">✓</span><span>그루터기가 남아있어</span></div>
+  </div>
+  <p class="chk-final" style="color:var(--growth)">숲이 스스로 회복할 수 있는 힘이 남아있어!</p>
+  <div class="btnrow">
+    <button class="btn primary" data-scroll="#s7">자연복원, 어떻게 할까?</button>
+  </div>
+</section>
+
+<!-- ===== SECTION 7 : 자연복원 방법 ===== -->
+<section id="s7" class="method-sec">
+  <div class="sechead reveal">
+    <div class="k">METHOD · 자연복원 방법</div>
+    <h2>이번엔 <b>기다림의 기술</b>이야<br>카드에 마우스를 올려보세요</h2>
+  </div>
+  <div class="rcards g3">
+    <div class="rcard">
+      <div class="rn">01</div>
+      <div class="rt">종자갱신</div>
+      <div class="mini"><div class="grow3"><span>🌰</span><span>🌱</span><span>🌳</span></div></div>
+      <div class="rd">주변 나무에서 씨앗이 떨어져<br><b>새로운 나무</b>로 자라납니다.</div>
+    </div>
+    <div class="rcard">
+      <div class="rn">02</div>
+      <div class="rt">맹아갱신</div>
+      <div class="mini"><div class="grow3"><span>🪵</span><span>🌿</span><span>🌳</span></div></div>
+      <div class="rd">그루터기나 뿌리에서<br>새싹이 자라 <b>다시 숲</b>이 됩니다.</div>
+    </div>
+    <div class="rcard">
+      <div class="rn">03</div>
+      <div class="rt">숲 출입 제한</div>
+      <div class="mini"><div class="fence"><i></i><i></i><i></i><i></i></div></div>
+      <div class="rd">사람의 출입을 제한해<br>숲이 <b>회복될 시간</b>을 줍니다.</div>
+    </div>
+  </div>
+
+  <div class="sim-cta reveal">
+    <div class="sc-k">🎮 더 깊이 체험하고 싶다면</div>
+    <p>같은 산불이어도 조건에 따라 다른 답이 필요해요.<br>실제 시뮬레이션에서 자연복원의 결과를 직접 확인해보세요.</p>
+    <a class="btn" href="index.html#app" target="_blank" rel="noopener">실전 시뮬레이션 체험하기 →</a>
+  </div>
+
+  <div class="btnrow">
+    <button class="btn primary" data-scroll="#s8">두 숲 모두 확인하기</button>
+  </div>
+</section>
+
+<!-- ===== SECTION 8 : 복원 완료 ===== -->
+<section id="s8" class="scene8">
+  <div class="wrap">
+    <div class="woopu-stage reveal" id="woopuStage3"></div>
+    <div class="bubbles">
+      <p class="bubble reveal">휴~</p>
+      <p class="bubble reveal">인공복원도, 자연복원도,<br><b>모두 끝났어!</b></p>
+      <p class="bubble reveal">하지만 복원은 끝이 아니라<br>이제부터가 <b>시작</b>이야.<br>숲은 꾸준한 관리가 필요해!</p>
+    </div>
+    <div class="btnrow reveal">
+      <button class="btn primary" data-scroll="#s9">10년 후로 가보기</button>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECTION 9 : 10년 후 (스크럽) ===== -->
+<div class="scrub-outer s9-outer" data-scrub="p9" id="s9">
+  <div class="scrub-stage">
+    <svg class="scrub-bg" viewBox="0 0 800 500" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+      <defs>
+        <linearGradient id="s9sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#bfe0c9"/><stop offset="100%" stop-color="#e7edcf"/></linearGradient>
+      </defs>
+      <rect width="800" height="500" fill="url(#s9sky)"/>
+      <path d="M0,300 Q200,260 400,290 T800,270 L800,500 L0,500 Z" fill="#5f8557"/>
+      <path d="M0,360 Q400,330 800,350 L800,500 L0,500 Z" fill="#37563a"/>
+      <g fill="#2c4a2f">
+        <circle cx="120" cy="290" r="30"/><circle cx="200" cy="300" r="24"/><circle cx="620" cy="280" r="34"/><circle cx="700" cy="300" r="22"/>
+      </g>
+    </svg>
+    <img class="s9-animal s9-a1" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 30'%3E%3Cpath d='M2,20 Q10,4 20,14 Q30,4 38,20 Q28,16 20,20 Q12,16 2,20Z' fill='%233d5340'/%3E%3C/svg%3E" alt="새" />
+    <img class="s9-animal s9-a2" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 30'%3E%3Cpath d='M20,4 C12,4 8,10 12,15 C8,16 6,22 12,24 C16,26 18,20 20,20 C22,20 24,26 28,24 C34,22 32,16 28,15 C32,10 28,4 20,4Z' fill='%23e29268'/%3E%3C/svg%3E" alt="나비" />
+    <img class="s9-animal s9-a3" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 90 70'%3E%3Cpath d='M20,60 L24,40 Q26,30 36,28 L54,28 Q64,30 66,40 L70,60' stroke='%23795737' stroke-width='5' fill='none' stroke-linecap='round'/%3E%3Cellipse cx='45' cy='34' rx='22' ry='14' fill='%23a97c52'/%3E%3Ccircle cx='64' cy='22' r='9' fill='%23a97c52'/%3E%3Cpath d='M60,15 L56,4 M68,15 L70,3' stroke='%23795737' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E" alt="사슴" />
+    <img class="s9-animal s9-a4" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 50'%3E%3Cpath d='M40,40 Q52,20 40,10 Q50,14 48,26' fill='%23a05a2c'/%3E%3Ccircle cx='22' cy='26' r='13' fill='%23c17a3f'/%3E%3Ccircle cx='14' cy='20' r='4' fill='%23c17a3f'/%3E%3C/svg%3E" alt="다람쥐" />
+    <div class="scrub-overlay">
+      <p class="s9-text" style="font-family:var(--serif);font-size:clamp(15px,3.8vw,18px);color:var(--moss-deep);font-weight:500">10년 후</p>
+      <p class="s9-text" style="font-family:var(--serif);font-size:clamp(19px,4.8vw,26px);color:var(--ink);font-weight:400;line-height:1.65;margin-top:10px;text-shadow:none">
+        산불은 하루였지만,<br>숲이 다시 살아나는 데에는<br><b style="color:var(--moss-deep)">10년</b>이라는 시간이 필요했습니다.
+      </p>
+      <p class="s9-text" style="font-family:var(--serif);font-size:clamp(14px,3.4vw,16.5px);color:#4b4636;font-weight:300;line-height:1.8;margin-top:18px;text-shadow:none">
+        복원은 나무를 심는 일이 아니라,<br>시간과 사람, 그리고 자연이<br>함께 만드는 일입니다.
+      </p>
+      <div class="s9-mission">
+        <div class="mission-badge">
+          <span class="mb-top">MISSION COMPLETE</span>
+          <span class="mb-main">Forest Restorer</span>
+          <span class="mb-sub">2026 그린캠프 · 인증 완료</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== FINAL : 나뭇잎 남기기 ===== -->
+<section class="finale">
+  <div class="wrap">
+    <div class="sechead reveal" style="padding-top:0">
+      <div class="k">FOREST RESTORER · MESSAGE</div>
+      <h2>숲에게 전하고 싶은<br><b>한마디를 남겨주세요</b></h2>
+    </div>
+
+    <div class="tree-wrap reveal">
+      <svg viewBox="0 0 400 320" id="treeSvg" aria-hidden="true">
+        <path d="M200,300 L200,190 M200,220 C200,190 150,195 140,150 M200,210 C200,180 250,185 262,140 M200,190 C200,165 175,168 168,130 M200,190 C200,165 225,168 234,130"
+          stroke="#5c4327" stroke-width="7" fill="none" stroke-linecap="round"/>
+        <g id="leafLayer"></g>
+      </svg>
+    </div>
+    <p class="leaf-count" id="leafCount">아직 아무도 나뭇잎을 남기지 않았어요 · 첫 번째가 되어주세요</p>
+
+    <form class="leaf-form" id="leafForm">
+      <input id="leafInput" type="text" maxlength="60" placeholder="예: 우리 함께 지켜낸 숲, 오래오래 푸르길" autocomplete="off" />
+      <button class="btn primary" type="submit">🌱 나뭇잎 남기기</button>
+    </form>
+
+    <p class="foot-note">우리의 작은 실천이 모여 숲은 다시 살아납니다.<br>2026 그린캠프 · 우리강산 푸르게 푸르게</p>
+  </div>
+</section>
+
+<script>
+(function(){
+  /* ---------- Woopu SVG builder ---------- */
+  function woopuSVG(pose,opts){
+    opts=opts||{};
+    var showBird = opts.bird!==false;
+    return ''+
+    '<svg class="woopu pose-'+pose+(opts.bob?' woopu-bob':'')+'" viewBox="0 0 152 200" xmlns="http://www.w3.org/2000/svg">'+
+      '<ellipse cx="76" cy="192" rx="34" ry="6" fill="rgba(0,0,0,.28)"/>'+
+      '<g class="woopu-arm-l"><path d="M56,118 C40,120 32,140 36,158" stroke="#3f6a3a" stroke-width="16" fill="none" stroke-linecap="round"/><circle cx="36" cy="160" r="9" fill="#f4d3ad"/></g>'+
+      '<g class="woopu-arm-r"><path d="M96,118 C112,120 120,140 116,158" stroke="#4f8a49" stroke-width="16" fill="none" stroke-linecap="round"/><circle cx="116" cy="160" r="9" fill="#f4d3ad"/></g>'+
+      '<path d="M40,186 L36,150 Q34,110 76,108 Q118,110 116,150 L112,186 Q76,196 40,186 Z" fill="#4f8a49"/>'+
+      '<path d="M52,120 Q76,132 100,120 L100,140 Q76,150 52,140 Z" fill="#2f4a2a"/>'+
+      '<circle cx="76" cy="76" r="40" fill="#f4d3ad"/>'+
+      '<circle cx="58" cy="86" r="5" fill="#e6a985" opacity=".7"/><circle cx="94" cy="86" r="5" fill="#e6a985" opacity=".7"/>'+
+      '<circle cx="62" cy="76" r="4.2" fill="#2c2620"/><circle cx="90" cy="76" r="4.2" fill="#2c2620"/>'+
+      (pose==='worried'?'<path d="M67,92 Q76,88 85,92" stroke="#2c2620" stroke-width="2.4" fill="none" stroke-linecap="round"/>':
+       '<path d="M66,90 Q76,98 86,90" stroke="#2c2620" stroke-width="2.6" fill="none" stroke-linecap="round"/>')+
+      '<g fill="#79c7ee"><circle cx="54" cy="58" r="17"/><circle cx="76" cy="50" r="19"/><circle cx="98" cy="58" r="17"/></g>'+
+      '<path d="M30,54 Q76,18 122,54 L122,60 Q76,32 30,60 Z" fill="#cdb287"/>'+
+      '<path d="M40,54 Q76,30 112,54 Q112,44 76,26 Q40,44 40,54Z" fill="#e2cba0"/>'+
+      '<path d="M46,58 L42,84 M106,58 L110,84" stroke="#a8895c" stroke-width="2.2" stroke-linecap="round"/>'+
+      '<circle cx="42" cy="86" r="2.6" fill="#8a6a45"/><circle cx="110" cy="86" r="2.6" fill="#8a6a45"/>'+
+      (showBird?'<g transform="translate(96,20)"><ellipse cx="10" cy="8" rx="12" ry="9" fill="#8fd4ee"/><path d="M0,6 Q-8,2 -14,6 Q-8,8 0,10Z" fill="#6cc0e0"/><circle cx="19" cy="6" r="2" fill="#22333a"/><path d="M22,7 L28,8 L22,10Z" fill="#e29268"/></g>':'')+
+    '</svg>';
+  }
+  document.getElementById('woopuStage1').innerHTML = woopuSVG('wave',{bob:true});
+  document.getElementById('woopuStage2').innerHTML = woopuSVG('worried',{bird:false});
+  document.getElementById('woopuStage3').innerHTML = woopuSVG('relieved',{bob:true});
+
+  /* ---------- scroll buttons ---------- */
+  document.querySelectorAll('[data-scroll]').forEach(function(b){
+    b.addEventListener('click',function(){
+      var target=document.querySelector(b.getAttribute('data-scroll'));
+      if(target) target.scrollIntoView({behavior:'smooth',block:'start'});
+    });
+  });
+
+  /* ---------- reveal on scroll ---------- */
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.15});
+  document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
+
+  var io2=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io2.unobserve(e.target);}});},{threshold:.4});
+  document.querySelectorAll('.checklist').forEach(function(el){io2.observe(el);});
+
+  /* ---------- scrub sections (scroll-linked progress vars, NaN-safe) ---------- */
+  var root=document.documentElement;
+  var scrubs=Array.prototype.slice.call(document.querySelectorAll('[data-scrub]'));
+  function updateScrubs(){
+    scrubs.forEach(function(el){
+      var h=el.offsetHeight-window.innerHeight;
+      var p=h>0?Math.min(1,Math.max(0,-el.getBoundingClientRect().top/h)):0;
+      root.style.setProperty('--'+el.getAttribute('data-scrub'),p.toFixed(3));
+    });
+  }
+  var ticking=false;
+  function onScroll(){
+    if(!ticking){ticking=true;requestAnimationFrame(function(){updateScrubs();ticking=false;});}
+  }
+  window.addEventListener('scroll',onScroll,{passive:true});
+  window.addEventListener('resize',onScroll,{passive:true});
+  updateScrubs();
+  if(document.fonts && document.fonts.ready){document.fonts.ready.then(updateScrubs);}
+
+  /* ---------- 인공복원 카드 (클릭) ---------- */
+  var CAP={soil:'토양에 영양분을 주니 흙빛이 달라졌어!',seedling:'튼튼한 묘목을 심었어!',seed:'씨앗에서 새싹이 올라왔어!',dam:'통나무 사방댐을 세웠어. 이제 흙이 쓸려가지 않아!'};
+  var doneA={};
+  var cardsA=document.getElementById('cardsA');
+  var progressA=document.getElementById('progressA'), progressLabelA=document.getElementById('progressLabelA'), doneMsgA=document.getElementById('doneMsgA'), toS5=document.getElementById('toS5');
+  cardsA.querySelectorAll('.rcard').forEach(function(card){
+    card.addEventListener('click',function(){
+      var step=card.getAttribute('data-step');
+      if(doneA[step])return;
+      doneA[step]=true;
+      card.classList.add('done');
+      var n=Object.keys(doneA).length;
+      progressA.style.width=(n/4*100)+'%';
+      progressLabelA.textContent=n+' / 4 완료 · '+CAP[step];
+      if(n>=4){
+        doneMsgA.classList.add('show');
+        toS5.removeAttribute('disabled');
+      }
+    });
+  });
+
+  /* ---------- 나뭇잎 남기기 ---------- */
+  var leafLayer=document.getElementById('leafLayer');
+  var leafCount=document.getElementById('leafCount');
+  var leafForm=document.getElementById('leafForm');
+  var leafInput=document.getElementById('leafInput');
+  var SLOTS=[[140,150],[168,130],[234,130],[262,140],[155,140],[245,140],[180,120],[220,120],[200,110],[150,165],[250,165],[130,160],[270,160],[165,110],[235,110],[190,95],[210,95],[145,175],[255,175],[175,150],[225,150],[200,135],[160,120],[240,120]];
+  var LEAF_COLORS=['#5f8557','#7ba36b','#a6c887','#4f8a49'];
+  var KEY='woopu_leaves_v1';
+  function loadLeaves(){try{return JSON.parse(localStorage.getItem(KEY)||'[]');}catch(e){return [];}}
+  function saveLeaves(list){try{localStorage.setItem(KEY,JSON.stringify(list));}catch(e){}}
+  function drawLeaf(msg,idx,animate){
+    var slot=SLOTS[idx%SLOTS.length];
+    var jitter=((idx*37)%13)-6;
+    var x=slot[0]+jitter, y=slot[1]+((idx*53)%13)-6;
+    var rot=((idx*29)%60)-30;
+    var color=LEAF_COLORS[idx%LEAF_COLORS.length];
+    var g=document.createElementNS('http://www.w3.org/2000/svg','g');
+    g.setAttribute('class','leaf');
+    g.setAttribute('transform','translate('+x+','+y+') rotate('+rot+')');
+    g.style.setProperty('--rot',rot+'deg');
+    if(!animate) g.style.animation='none';
+    var path=document.createElementNS('http://www.w3.org/2000/svg','path');
+    path.setAttribute('d','M0,-9 C7,-9 11,-3 11,3 C11,9 5,13 0,13 C-5,13 -11,9 -11,3 C-11,-3 -7,-9 0,-9 Z');
+    path.setAttribute('fill',color);
+    var title=document.createElementNS('http://www.w3.org/2000/svg','title');
+    title.textContent=msg;
+    g.appendChild(path);g.appendChild(title);
+    leafLayer.appendChild(g);
+  }
+  function refreshCount(n){
+    leafCount.textContent = n>0 ? ('지금까지 '+n+'명이 나뭇잎을 남겼어요 🍃') : '아직 아무도 나뭇잎을 남기지 않았어요 · 첫 번째가 되어주세요';
+  }
+  var leaves=loadLeaves();
+  leaves.forEach(function(item,i){drawLeaf(item.m,i,false);});
+  refreshCount(leaves.length);
+
+  leafForm.addEventListener('submit',function(e){
+    e.preventDefault();
+    var msg=leafInput.value.trim();
+    if(!msg)return;
+    leaves.push({m:msg,t:Date.now()});
+    if(leaves.length>60) leaves=leaves.slice(leaves.length-60);
+    saveLeaves(leaves);
+    drawLeaf(msg,leaves.length-1,true);
+    refreshCount(leaves.length);
+    leafInput.value='';
+  });
+})();
+</script>
+</body>
+</html>
