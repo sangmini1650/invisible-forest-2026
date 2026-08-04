@@ -100,7 +100,7 @@
   .scrub-overlay p+p{margin-top:14px}
 
   /* scene2 : 산불 재해 지역 도착 */
-  .s2-outer{height:230vh}
+  .s2-outer{height:190vh}
   .s2-veil{position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(14,11,6,.55),rgba(14,11,6,.15) 40%,rgba(14,11,6,.15) 60%,rgba(14,11,6,.7))}
   .s2-tag{position:absolute;top:22px;left:50%;transform:translateX(-50%);z-index:2;font-size:11px;letter-spacing:.1em;color:var(--growth-soft);
     background:rgba(20,16,9,.55);border:1px solid rgba(240,234,220,.16);padding:7px 14px;border-radius:999px;display:flex;align-items:center;gap:6px}
@@ -121,7 +121,7 @@
   .s5-text{opacity:calc(var(--p5) * 2.4 - .6)}
 
   /* scene9 : 10년 후 */
-  .s9-outer{height:260vh}
+  .s9-outer{height:220vh}
   .s9-animal{position:absolute;opacity:0;transition:none}
   .s9-a1{top:18%;left:14%;width:34px;opacity:calc(var(--p9) * 4 - 1.2)}
   .s9-a2{top:24%;right:16%;width:26px;opacity:calc(var(--p9) * 4 - 1.6)}
@@ -156,7 +156,8 @@
   .rcards.g3{grid-template-columns:repeat(3,1fr)}
   @media(max-width:640px){.rcards.g3{grid-template-columns:1fr}}
   .rcard{background:var(--char2);border:1px solid rgba(240,234,220,.1);border-radius:16px;padding:20px 18px;cursor:pointer;transition:border-color .2s,transform .2s;text-align:left}
-  .rcard:hover{border-color:var(--growth);transform:translateY(-2px)}
+  .rcard:hover,.rcard:focus-visible{border-color:var(--growth);transform:translateY(-2px)}
+  .rcard:focus-visible{outline:2px solid var(--growth);outline-offset:2px}
   .rcard.done{border-color:var(--moss);background:linear-gradient(160deg,rgba(95,133,87,.16),rgba(95,133,87,.04))}
   .rcard .rn{font-size:11px;letter-spacing:.1em;color:var(--growth);font-weight:700;margin-bottom:8px}
   .rcard .rt{font-family:var(--serif);font-size:17px;font-weight:700;color:#fff;margin-bottom:10px}
@@ -177,12 +178,12 @@
   .fence{display:flex;gap:2px}
   .fence i{display:block;width:4px;height:0;background:var(--bone-dim);border-radius:1px;transition:height .4s ease}
   .fence i:nth-child(2){height:0}
-  .rcard:hover .fence i{height:26px}
-  .rcard:hover .fence i:nth-child(1){transition-delay:0s} .rcard:hover .fence i:nth-child(2){transition-delay:.08s} .rcard:hover .fence i:nth-child(3){transition-delay:.16s} .rcard:hover .fence i:nth-child(4){transition-delay:.24s}
+  .rcard:hover .fence i,.rcard:focus-visible .fence i{height:26px}
+  .rcard:hover .fence i:nth-child(1),.rcard:focus-visible .fence i:nth-child(1){transition-delay:0s} .rcard:hover .fence i:nth-child(2),.rcard:focus-visible .fence i:nth-child(2){transition-delay:.08s} .rcard:hover .fence i:nth-child(3),.rcard:focus-visible .fence i:nth-child(3){transition-delay:.16s} .rcard:hover .fence i:nth-child(4),.rcard:focus-visible .fence i:nth-child(4){transition-delay:.24s}
   .grow3{display:flex;gap:4px;align-items:center}
   .grow3 span{opacity:.25;transition:opacity .3s,transform .3s;transform:scale(.85)}
-  .rcard:hover .grow3 span{opacity:1;transform:scale(1)}
-  .rcard:hover .grow3 span:nth-child(1){transition-delay:0s} .rcard:hover .grow3 span:nth-child(2){transition-delay:.15s} .rcard:hover .grow3 span:nth-child(3){transition-delay:.3s}
+  .rcard:hover .grow3 span,.rcard:focus-visible .grow3 span{opacity:1;transform:scale(1)}
+  .rcard:hover .grow3 span:nth-child(1),.rcard:focus-visible .grow3 span:nth-child(1){transition-delay:0s} .rcard:hover .grow3 span:nth-child(2),.rcard:focus-visible .grow3 span:nth-child(2){transition-delay:.15s} .rcard:hover .grow3 span:nth-child(3),.rcard:focus-visible .grow3 span:nth-child(3){transition-delay:.3s}
 
   .progress-wrap{max-width:420px;margin:28px auto 0;padding:0 22px}
   .progress-bar{height:8px;border-radius:999px;background:rgba(240,234,220,.1);overflow:hidden}
@@ -315,25 +316,25 @@
     <h2>우푸의 <b>복원 도구 4종</b><br>하나씩 눌러 진행해보세요</h2>
   </div>
   <div class="rcards" id="cardsA">
-    <div class="rcard" data-step="soil">
+    <div class="rcard" data-step="soil" role="button" tabindex="0">
       <div class="rn">STEP 1</div>
       <div class="rt">토양개량</div>
       <div class="mini soil-mini">🟫</div>
       <div class="rd">토양에 <b>영양분</b>을 주자~</div>
     </div>
-    <div class="rcard" data-step="seedling">
+    <div class="rcard" data-step="seedling" role="button" tabindex="0">
       <div class="rn">STEP 2</div>
       <div class="rt">묘목심기</div>
       <div class="mini"><span class="seed">🌱</span></div>
       <div class="rd">건강한 <b>묘목</b>을 심어야지~</div>
     </div>
-    <div class="rcard" data-step="seed">
+    <div class="rcard" data-step="seed" role="button" tabindex="0">
       <div class="rn">STEP 3</div>
       <div class="rt">씨앗뿌리기</div>
       <div class="mini"><span class="grow-a">🌰</span><span class="grow-b">🌿</span></div>
       <div class="rd"><b>씨앗</b>을 뿌리자~</div>
     </div>
-    <div class="rcard" data-step="dam">
+    <div class="rcard" data-step="dam" role="button" tabindex="0">
       <div class="rn">STEP 4</div>
       <div class="rt">사방댐 설치</div>
       <div class="mini"><div class="logs"><i></i><i></i><i></i><i></i><i></i></div></div>
@@ -402,19 +403,19 @@
     <h2>이번엔 <b>기다림의 기술</b>이야<br>카드에 마우스를 올려보세요</h2>
   </div>
   <div class="rcards g3">
-    <div class="rcard">
+    <div class="rcard" tabindex="0">
       <div class="rn">01</div>
       <div class="rt">종자갱신</div>
       <div class="mini"><div class="grow3"><span>🌰</span><span>🌱</span><span>🌳</span></div></div>
       <div class="rd">주변 나무에서 씨앗이 떨어져<br><b>새로운 나무</b>로 자라납니다.</div>
     </div>
-    <div class="rcard">
+    <div class="rcard" tabindex="0">
       <div class="rn">02</div>
       <div class="rt">맹아갱신</div>
       <div class="mini"><div class="grow3"><span>🪵</span><span>🌿</span><span>🌳</span></div></div>
       <div class="rd">그루터기나 뿌리에서<br>새싹이 자라 <b>다시 숲</b>이 됩니다.</div>
     </div>
-    <div class="rcard">
+    <div class="rcard" tabindex="0">
       <div class="rn">03</div>
       <div class="rt">숲 출입 제한</div>
       <div class="mini"><div class="fence"><i></i><i></i><i></i><i></i></div></div>
@@ -581,6 +582,7 @@
   var cardsA=document.getElementById('cardsA');
   var progressA=document.getElementById('progressA'), progressLabelA=document.getElementById('progressLabelA'), doneMsgA=document.getElementById('doneMsgA'), toS5=document.getElementById('toS5');
   cardsA.querySelectorAll('.rcard').forEach(function(card){
+    card.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();card.click();}});
     card.addEventListener('click',function(){
       var step=card.getAttribute('data-step');
       if(doneA[step])return;
