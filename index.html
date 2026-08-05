@@ -215,8 +215,14 @@
   .team .k{font-size:clamp(12.5px,1.5vw,14px);letter-spacing:.2em;color:var(--ember-soft);font-weight:700;margin-bottom:16px}
   .team h2{font-family:var(--serif);font-size:clamp(19px,4.6vw,26px);font-weight:300;color:var(--bone);line-height:1.65}
   .team h2 b{font-weight:700}
-  .names{display:flex;flex-wrap:wrap;gap:7px;justify-content:center;margin:30px auto 0;max-width:490px}
-  .names span{background:var(--char2);border:1px solid rgba(240,234,220,.1);border-radius:999px;padding:8px 15px;font-size:12.5px;color:var(--bone-dim)}
+  .names{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:34px auto 0;max-width:480px}
+  @media(max-width:480px){.names{grid-template-columns:repeat(2,1fr)}}
+  .member{background:linear-gradient(160deg,rgba(240,234,220,.07),rgba(240,234,220,.02));border:1px solid rgba(240,234,220,.1);
+    border-radius:14px;padding:16px 8px 14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;
+    transition:border-color .2s,transform .2s,background .2s}
+  .member:hover{border-color:var(--growth);transform:translateY(-3px);background:linear-gradient(160deg,rgba(166,200,135,.1),rgba(166,200,135,.02))}
+  .member .mi{font-size:10px;letter-spacing:.16em;color:var(--growth);font-weight:700}
+  .member .mn{font-family:var(--serif);font-size:15px;color:var(--bone);font-weight:600;letter-spacing:-.01em}
   .foot{margin-top:36px;color:var(--dim2);font-size:11.5px;font-weight:300}
 
   /* ===== 태블릿(아이패드) 최적화 ===== */
@@ -452,8 +458,14 @@
     <div class="k">2026 그린캠프 2조</div>
     <h2>세상을 바꾸는 첫 초록 발걸음,<br><b>여러분의 실천</b>으로부터 시작합니다.</h2>
     <div class="names">
-      <span>김찬</span><span>박건하</span><span>이주</span><span>현동민</span>
-      <span>박상민</span><span>석도영</span><span>한채아</span><span>혜민</span>
+      <div class="member"><span class="mi">01</span><span class="mn">김찬</span></div>
+      <div class="member"><span class="mi">02</span><span class="mn">박건하</span></div>
+      <div class="member"><span class="mi">03</span><span class="mn">이주</span></div>
+      <div class="member"><span class="mi">04</span><span class="mn">현동민</span></div>
+      <div class="member"><span class="mi">05</span><span class="mn">박상민</span></div>
+      <div class="member"><span class="mi">06</span><span class="mn">석도영</span></div>
+      <div class="member"><span class="mi">07</span><span class="mn">한채아</span></div>
+      <div class="member"><span class="mi">08</span><span class="mn">혜민</span></div>
     </div>
     <p class="foot">유한킴벌리 · 우리강산 푸르게 푸르게 · 2026 그린캠프</p>
   </div>
