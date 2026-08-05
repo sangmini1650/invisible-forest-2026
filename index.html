@@ -72,8 +72,6 @@
   .cell .emo{font-size:30px;line-height:1;margin-bottom:12px}
   .cell .who{font-size:11px;letter-spacing:.08em;color:var(--ember-soft);font-weight:700;margin-bottom:9px}
   .cell .say{font-family:var(--serif);font-size:14.5px;color:var(--bone);line-height:1.7;font-weight:300}
-  .cell .vtag{margin-top:14px;font-size:11px;color:var(--dim2);letter-spacing:.04em}
-  .cell .vtag b{color:var(--growth-soft);font-weight:600}
   .need{max-width:540px;margin:56px auto 0;text-align:center;padding:0 22px}
   .need .tr{width:1px;height:40px;background:linear-gradient(var(--ember-soft),transparent);margin:0 auto 26px}
   .need p{font-family:var(--serif);font-size:clamp(20px,5vw,29px);font-weight:500;color:var(--bone);line-height:1.5}
@@ -127,11 +125,6 @@
   .cross .cx{font-family:var(--serif);font-size:16.5px;line-height:1.85;color:#fff;font-weight:300}
   .axiom{text-align:center;font-family:var(--serif);font-size:clamp(16.5px,4.2vw,20px);line-height:1.7;color:var(--ink);font-weight:400;padding:6px 0 2px}
   .axiom b{color:var(--moss-deep);font-weight:700}
-  .tcard{text-align:center}
-  .tcard .tk{font-size:10.5px;letter-spacing:.2em;color:var(--moss);font-weight:700;margin-bottom:12px}
-  .temo{font-size:48px;line-height:1;margin:6px 0 14px}
-  .tcard .tname{font-family:var(--serif);font-size:clamp(29px,7vw,40px);font-weight:700;color:var(--moss-deep);letter-spacing:-.02em}
-  .tcard .ttag{color:#6d6555;margin-top:12px;font-size:14px;line-height:1.75;font-weight:300}
   .btns{display:flex;gap:9px;justify-content:center;margin-top:24px;flex-wrap:wrap}
   .btn{font-family:var(--sans);font-size:13.5px;font-weight:600;padding:13px 22px;border-radius:11px;cursor:pointer;border:1px solid #ddd4c1;background:var(--cream);color:var(--ink);transition:border-color .18s,background .18s,transform .18s}
   .btn:hover{border-color:var(--moss);background:#f3f7ee;transform:translateY(-1px)}
@@ -314,17 +307,13 @@
   </div>
   <div class="grid4">
     <div class="cell reveal"><div class="emo">🧑‍🌾</div><div class="who">산골 마을 어르신</div>
-      <div class="say">“40년 넘게 이 산이랑 같이 살았는데… 이제 송이버섯이 안 나요. 혼자가 될까 봐 무서워요.”</div>
-      <div class="vtag">🎬 <b>인터뷰 영상</b> · 준비 중</div></div>
+      <div class="say">“40년 넘게 이 산이랑 같이 살았는데… 이제 송이버섯이 안 나요. 혼자가 될까 봐 무서워요.”</div></div>
     <div class="cell reveal"><div class="emo">🐈</div><div class="who">삵</div>
-      <div class="say">“내 집 어디 갔냐옹… 숨을 곳도 먹이도 없다냥 😿”</div>
-      <div class="vtag">🎬 <b>영상</b> · 준비 중</div></div>
+      <div class="say">“내 집 어디 갔냐옹… 숨을 곳도 먹이도 없다냥 😿”</div></div>
     <div class="cell reveal"><div class="emo">🌡️</div><div class="who">흙과 하늘</div>
-      <div class="say">“그늘이 사라지니까 한여름엔 정말 뜨거워요. 흙도 물을 못 붙잡아 금방 메말라요.”</div>
-      <div class="vtag">🎬 <b>영상</b> · 준비 중</div></div>
+      <div class="say">“그늘이 사라지니까 한여름엔 정말 뜨거워요. 흙도 물을 못 붙잡아 금방 메말라요.”</div></div>
     <div class="cell reveal"><div class="emo">🧒</div><div class="who">서울에서 온 시민</div>
-      <div class="say">“여름엔 계곡, 가을엔 단풍 보러 오고 싶었는데…”</div>
-      <div class="vtag">🎬 <b>영상</b> · 준비 중</div></div>
+      <div class="say">“여름엔 계곡, 가을엔 단풍 보러 오고 싶었는데…”</div></div>
   </div>
   <div class="need reveal">
     <div class="tr"></div>
@@ -348,7 +337,7 @@
 
 <!-- ===== 본론 : 시뮬레이션 ===== -->
 <section class="app" id="app">
-  <div class="steps" id="steps"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  <div class="steps" id="steps"><i></i><i></i><i></i><i></i></div>
   <div class="wrap"><div class="card" id="card"></div></div>
 </section>
 
@@ -464,17 +453,6 @@
   window.addEventListener('keydown',function(e){if(e.key==='Escape')closeLightbox();});
 
   /* data */
-  var TYPES={
-    scenery:{emo:'🌄',name:'경관 복원가',line:'당신은 숲의 경관이 다시 돌아오는 것을 가장 먼저 생각했습니다.',tag:'“여기 진짜 좋다” 소리가 나오는 풍경을 되돌리고 싶은 사람.'},
-    wildlife:{emo:'🐈',name:'서식지 복원가',line:'당신은 야생동물이 다시 살아갈 환경을 가장 먼저 생각했습니다.',tag:'숲은 나무가 아니라, 살아가는 것들의 집이라고 믿는 사람.'},
-    community:{emo:'🍄',name:'공동체 복원가',line:'당신은 지역주민의 삶과 생계가 회복되는 것을 가장 먼저 생각했습니다.',tag:'숲과 함께 살아온 사람들의 평범한 하루까지가 숲이라고 믿는 사람.'},
-    func:{emo:'💧',name:'기능 복원가',line:'당신은 숲의 기능(물·토양·기후)이 회복되는 것을 가장 먼저 생각했습니다.',tag:'눈에 안 보여도 숲이 하던 진짜 일을 아는 사람.'}
-  };
-  var QUIZ=[
-    {q:'숲에 놀러 가면 나는?',s:'가볍게 골라주세요 🌿',a:[['📸 인생샷 명당부터 찾는다','scenery'],['🐿️ 어! 다람쥐다! 하고 쫓아간다','wildlife'],['🍚 근처 맛집이랑 시장부터 검색','community'],['🌬️ 그늘에 앉아 바람 쐬는 게 최고','func']]},
-    {q:'산불 뉴스를 봤을 때<br>가장 먼저 든 생각은?',s:'',a:[['😢 그 예쁘던 풍경이 다 탔겠네','scenery'],['🦌 거기 살던 동물들은 어디로 갔을까','wildlife'],['🏘️ 거기 사시던 분들은 어떡하지','community'],['🌏 이제 여름이 더 더워지겠구나','func']]},
-    {q:'30년 뒤 그 숲에 다시 간다면,<br>가장 보고 싶은 건?',s:'',a:[['🌄 예전처럼 멋진 풍경','scenery'],['🐈 숲을 지나가는 삵 한 마리','wildlife'],['🍄 다시 송이버섯 캐는 어르신','community'],['🌳 시원한 그늘과 맑은 계곡물','func']]}
-  ];
   var CASES={
     c1:{tag:'CASE 01 · 당신이 배정받은 땅',desc:'불길이 너무 강했습니다. <b>씨앗 공급원이 모두 타버렸고, 토양의 유기물도 소실</b>되었습니다. 흙은 물을 잘 머금지 못하는 상태입니다.'},
     c2:{tag:'CASE 02 · 당신이 배정받은 땅',desc:'피해는 컸지만 <b>흙 속에 씨앗이 남아 있고, 토양의 영양분도 살아</b> 있습니다. 땅속에서는 이미 어린나무가 준비 중입니다.'}
@@ -492,75 +470,63 @@
     }
   };
   var VERDICT={fail:{label:'복원 실패',color:'#c4552e'},half:{label:'절반의 회복',color:'#c99a44'},ok:{label:'복원 성공',color:'#5f8557'},okbut:{label:'성공, 그러나',color:'#7a9b5e'}};
-  var CROSS={fail:'그런데 이 땅에서 당신의 선택은, 30년 뒤에도 그 바람에 닿지 못했습니다.',half:'나무는 돌아왔습니다. 그러나 당신이 가장 먼저 바랐던 그것은, 아직 돌아오지 않았습니다.',ok:'이 땅의 조건에서, 당신의 선택은 그 바람에 닿았습니다.',okbut:'당신의 바람에는 닿았습니다. 다만 이 땅은, 기다리는 것만으로도 같은 곳에 닿을 수 있었습니다.'};
+  var CROSS={fail:'이 땅에서는, 기다림만으로는 30년 뒤에도 숲에 닿지 못했습니다.',half:'나무는 돌아왔습니다. 그러나 진짜 숲이라 부르기엔 아직 부족합니다.',ok:'이 땅의 조건에 맞는 선택이었기에, 30년 뒤 원하던 숲에 닿았습니다.',okbut:'원하는 결과에는 닿았습니다. 다만 이 땅은, 기다리는 것만으로도 같은 곳에 닿을 수 있었습니다.'};
 
   /* flow */
   var card=document.getElementById('card'), steps=document.getElementById('steps').children;
-  var S={type:null,cs:null,choice:null}, qi=0, score={scenery:0,wildlife:0,community:0,func:0};
+  var S={cs:null,choice:null};
   function mark(n){for(var i=0;i<steps.length;i++)steps[i].className=i<n?'on':'';}
   function go(fn){card.classList.remove('fade');void card.offsetWidth;card.classList.add('fade');fn();}
   function bind(sel,fn){var e=card.querySelectorAll(sel);for(var i=0;i<e.length;i++){(function(b){b.addEventListener('click',function(){fn(b);});})(e[i]);}}
   function esc(s){return s.replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
 
-  function quiz(){
-    if(qi>=QUIZ.length)return go(typeCard);
-    mark(qi+1);var q=QUIZ[qi];
-    card.innerHTML='<div class="kicker">복원가 유형 진단 · '+(qi+1)+' / '+QUIZ.length+'</div><div class="qtext">'+q.q+'</div>'+(q.s?'<div class="qsub">'+q.s+'</div>':'<div style="height:14px"></div>')+'<div class="opts">'+q.a.map(function(o){return '<button class="opt" data-t="'+o[1]+'">'+o[0]+'</button>';}).join('')+'</div>';
-    bind('[data-t]',function(b){score[b.getAttribute('data-t')]++;qi++;go(quiz);});
-  }
-  function typeCard(){
-    mark(3);var best='scenery',mx=-1;for(var k in score){if(score[k]>mx){mx=score[k];best=k;}}S.type=best;var t=TYPES[best];
-    card.innerHTML='<div class="tcard"><div class="tk">당신의 복원가 유형</div><div class="temo">'+t.emo+'</div><div class="tname">'+t.name+'</div><div class="ttag">'+t.tag+'</div></div><div class="btns"><button class="btn primary" data-go="1">'+t.name+'로 현장에 가기</button><button class="btn" data-again="1">다시 진단</button></div>';
-    bind('[data-go]',function(){go(caseView);});bind('[data-again]',function(){qi=0;score={scenery:0,wildlife:0,community:0,func:0};go(quiz);});
-  }
   function caseView(){
-    mark(4);S.cs=Math.random()<0.5?'c1':'c2';var c=CASES[S.cs],t=TYPES[S.type];
-    card.innerHTML='<div class="kicker">STEP 1 · 현장 도착</div><div class="qtext">'+t.name+'님,<br>산불 현장에 도착했습니다.</div><div class="qsub">모든 산불 피해지가 같지는 않습니다. 이 땅부터 살펴보세요.</div><div class="case '+S.cs+'"><div class="tag">'+c.tag+'</div><div class="desc">'+c.desc+'</div></div><div class="opts"><button class="opt" data-next="1" style="text-align:center;font-weight:700">살펴봤습니다 · 복원 방법 정하기</button></div>';
+    mark(1);S.cs=Math.random()<0.5?'c1':'c2';var c=CASES[S.cs];
+    card.innerHTML='<div class="kicker">STEP 1 · 현장 도착</div><div class="qtext">Forest Restorer님,<br>산불 현장에 도착했습니다.</div><div class="qsub">모든 산불 피해지가 같지는 않습니다. 이 땅부터 살펴보세요.</div><div class="case '+S.cs+'"><div class="tag">'+c.tag+'</div><div class="desc">'+c.desc+'</div></div><div class="opts"><button class="opt" data-next="1" style="text-align:center;font-weight:700">살펴봤습니다 · 복원 방법 정하기</button></div>';
     bind('[data-next]',function(){go(choice);});
   }
   function choice(){
-    mark(5);
+    mark(2);
     card.innerHTML='<div class="kicker">STEP 2 · 결정</div><div class="qtext">어떤 복원을 택하시겠습니까?</div><div class="qsub">'+(S.cs==='c1'?'씨앗도 흙의 양분도 남지 않은 땅입니다.':'흙 속에 씨앗과 양분이 남아 있는 땅입니다.')+'</div><div class="opts"><button class="opt" data-c="natural">⏳ 자연복원 — 기다린다<small>사람이 손대지 않고, 숲이 스스로 돌아오게 한다</small></button><button class="opt" data-c="survey">🔍 인공복원 — 조사한 뒤 여러 종을 심는다<small>주변에 원래 살던 나무를 알아보고, 그에 맞게 심는다</small></button><button class="opt" data-c="single">⚡ 인공복원 — 빨리 자라는 한 종을 심는다<small>가장 빠르게 초록을 되돌린다</small></button></div>';
     bind('[data-c]',function(b){S.choice=b.getAttribute('data-c');go(result);});
   }
   function result(){
-    mark(6);var o=OUT[S.cs][S.choice],v=VERDICT[o.v];
+    mark(3);var o=OUT[S.cs][S.choice],v=VERDICT[o.v];
     var rows=o.tl.map(function(r,i){return '<div class="row '+r[2]+'" style="animation-delay:'+(i*0.3+0.1)+'s"><div class="yr">'+r[0]+'</div><div class="txt">'+r[1]+'</div></div>';}).join('');
-    card.innerHTML='<div class="verdict"><span class="vlabel" style="background:'+v.color+'">'+v.label+'</span><div class="vtitle">'+o.t.replace(/\n/g,'<br>')+'</div></div><div class="tl">'+rows+'</div><div class="explain">'+o.ex+'</div><div class="btns"><button class="btn primary" data-go="1">이 결과가 나에게 뜻하는 것</button></div>';
+    card.innerHTML='<div class="verdict"><span class="vlabel" style="background:'+v.color+'">'+v.label+'</span><div class="vtitle">'+o.t.replace(/\n/g,'<br>')+'</div></div><div class="tl">'+rows+'</div><div class="explain">'+o.ex+'</div><div class="btns"><button class="btn primary" data-go="1">이 결과가 뜻하는 것</button></div>';
     bind('[data-go]',function(){go(cross);});
   }
   function cross(){
-    var o=OUT[S.cs][S.choice],t=TYPES[S.type];
-    card.innerHTML='<div class="kicker">'+t.emo+' '+t.name+' × 이 땅의 조건</div><div class="cross"><div class="cv">당신의 유형이 바라던 것</div><div class="cx">'+t.line+'<br><br>'+CROSS[o.v]+'</div></div><div class="axiom">복원 방법에 <b>정답은 없습니다.</b><br>그러나 조건을 <b>묻지 않고 내린 결정은 오답</b>입니다.</div><div class="btns"><button class="btn primary" data-go="1">그럼 실제 사례는?</button><button class="btn" data-again="1">다른 땅에서 다시</button></div>';
+    mark(4);var o=OUT[S.cs][S.choice];
+    card.innerHTML='<div class="kicker">이 땅의 조건 × 당신의 선택</div><div class="cross"><div class="cv">그 결과가 뜻하는 것</div><div class="cx">'+CROSS[o.v]+'</div></div><div class="axiom">복원 방법에 <b>정답은 없습니다.</b><br>그러나 조건을 <b>묻지 않고 내린 결정은 오답</b>입니다.</div><div class="btns"><button class="btn primary" data-go="1">그럼 실제 사례는?</button><button class="btn" data-again="1">다른 땅에서 다시</button></div>';
     bind('[data-go]',function(){document.getElementById('cases').scrollIntoView({behavior:'smooth',block:'start'});});
     bind('[data-again]',function(){restart();});
   }
   function restart(){
-    S={type:null,cs:null,choice:null};qi=0;score={scenery:0,wildlife:0,community:0,func:0};
+    S={cs:null,choice:null};
     document.getElementById('tick').style.display='none';
     document.getElementById('app').scrollIntoView({behavior:'smooth',block:'start'});
-    setTimeout(function(){go(quiz);},300);
+    setTimeout(function(){go(caseView);},300);
   }
 
-  /* 사례 → 티켓 */
+  /* 내 복원가 티켓 받기 — 바로 발급 */
   document.getElementById('toTicket').addEventListener('click',function(){
-    if(!S.type){ document.getElementById('app').scrollIntoView({behavior:'smooth',block:'start'}); return; }
     buildTicket();
     document.getElementById('tick').scrollIntoView({behavior:'smooth',block:'start'});
   });
   function buildTicket(){
-    var t=TYPES[S.type], no='NO. '+(Math.floor(Math.random()*9000)+1000);
+    var no='NO. '+(Math.floor(Math.random()*9000)+1000);
     document.getElementById('ticket').innerHTML=
       '<div class="ticket__top"><div class="brand">SEOUL FOREST · 08.08</div><div class="tt">보이지 않는 숲</div><div class="no">'+no+'</div></div>'+
       '<div class="perf"><i></i></div>'+
-      '<div class="ticket__body"><div class="trow"><div class="tl2">나의 복원가 유형</div><div class="tv">'+t.emo+' '+t.name+'</div></div>'+
+      '<div class="ticket__body"><div class="trow"><div class="tl2">인증</div><div class="tv">🌱 Forest Restorer</div></div>'+
       '<div class="trow"><div class="tl2">기억할 한 가지</div><div class="tv" style="font-size:15px;line-height:1.6">묻지 않고 심은 나무는,<br>숲이 되지 못합니다</div></div></div>'+
       '<div class="staff"><div class="sn">이 화면을 부스 스태프에게 보여주세요.<br>스태프가 확인 후 버튼을 눌러드립니다.</div><button class="sbtn" id="sbtn">인증 완료</button></div>';
     document.getElementById('tick').style.display='block';
     document.getElementById('sbtn').addEventListener('click',function(){if(this.classList.contains('done'))return;this.classList.add('done');this.textContent='✓ 인증 완료되었습니다';});
   }
 
-  quiz();
+  caseView();
 })();
 </script>
 </body>
