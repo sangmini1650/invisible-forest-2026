@@ -87,45 +87,6 @@
   .ccard .ce{font-size:11px;letter-spacing:.1em;color:var(--growth);font-weight:600;margin-bottom:12px}
   .ccard .cd{font-size:13.5px;color:var(--bone-dim);line-height:1.7;font-weight:300}
 
-  /* ===== APP ===== */
-  .app{background:var(--cream);color:var(--ink);padding:70px 0 96px;position:relative;z-index:4}
-  .steps{display:flex;gap:4px;max-width:520px;margin:0 auto 32px;padding:0 22px}
-  .steps i{height:2.5px;flex:1;border-radius:2px;background:#ddd5c2;transition:background .5s}
-  .steps i.on{background:var(--moss)}
-  .card{max-width:520px;margin:0 auto;background:#fffdf8;border:1px solid #e6ddca;border-radius:20px;padding:34px 26px;box-shadow:0 30px 60px -34px rgba(55,86,58,.5),0 2px 0 rgba(255,255,255,.7) inset}
-  .kicker{font-size:10.5px;letter-spacing:.2em;font-weight:700;color:var(--moss);margin-bottom:14px}
-  .qtext{font-family:var(--serif);font-size:clamp(20px,4.8vw,25px);font-weight:500;color:var(--ink);line-height:1.5;margin-bottom:9px;letter-spacing:-.01em}
-  .qsub{font-size:13.5px;color:#6d6555;margin-bottom:24px;font-weight:300;line-height:1.7}
-  .opts{display:grid;gap:9px}
-  .opt{text-align:left;font-family:var(--sans);font-size:15px;color:var(--ink);background:var(--cream);border:1px solid #e6ddca;border-radius:13px;padding:16px 18px;cursor:pointer;font-weight:500;line-height:1.5;transition:border-color .18s,background .18s,transform .18s}
-  .opt small{display:block;margin-top:5px;font-size:12px;color:#807765;font-weight:400;line-height:1.5}
-  .opt:hover{border-color:var(--moss);background:#f3f7ee;transform:translateX(3px)}
-  .opt:focus-visible{outline:2px solid var(--moss);outline-offset:2px}
-  .fade{animation:fade .55s cubic-bezier(.2,.7,.3,1)}
-  @keyframes fade{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
-  .case{border-radius:15px;padding:24px 21px;margin-bottom:22px;border:1px dashed}
-  .case.c1{background:linear-gradient(160deg,#fbf1ec,#f8eae2);border-color:#dfa88c}
-  .case.c2{background:linear-gradient(160deg,#f2f8ec,#eaf3e2);border-color:#a9c795}
-  .case .tag{font-size:10.5px;letter-spacing:.18em;font-weight:700;margin-bottom:10px}
-  .case.c1 .tag{color:var(--ember)} .case.c2 .tag{color:var(--moss-deep)}
-  .case .desc{font-size:14.5px;color:var(--ink);line-height:1.75} .case .desc b{font-weight:700}
-  .verdict{text-align:center;margin-bottom:26px}
-  .verdict .vlabel{display:inline-block;font-size:11px;letter-spacing:.16em;font-weight:700;padding:7px 16px;border-radius:999px;color:#fff}
-  .verdict .vtitle{font-family:var(--serif);font-size:clamp(22px,5.4vw,30px);font-weight:700;margin-top:16px;line-height:1.4}
-  .tl{margin:8px 0 24px;border-left:1.5px solid #e6ddca}
-  .tl .row{display:grid;grid-template-columns:48px 1fr;gap:14px;padding:15px 0 15px 18px;position:relative;opacity:0;animation:fade .55s ease forwards}
-  .tl .row::before{content:"";position:absolute;left:-5.5px;top:23px;width:9px;height:9px;border-radius:50%;background:#d5cdb9;border:2px solid #fffdf8}
-  .tl .row.g::before{background:var(--ok)} .tl .row.b::before{background:var(--fail)} .tl .row.h::before{background:var(--half)}
-  .tl .yr{font-family:var(--serif);font-size:16px;font-weight:700;color:var(--moss-deep)}
-  .tl .txt{font-size:13.5px;color:#5f5747;line-height:1.65}
-  .explain{background:var(--cream);border-radius:13px;padding:19px;font-size:14px;color:var(--ink);line-height:1.8;border-left:2.5px solid var(--moss)}
-  .explain b{color:var(--moss-deep);font-weight:700}
-  .cross{background:linear-gradient(150deg,#26361f,#1b2917);border-radius:16px;padding:26px 22px;margin-bottom:24px}
-  .cross .cv{font-size:11px;letter-spacing:.16em;color:var(--growth);margin-bottom:12px;font-weight:600}
-  .cross .cx{font-family:var(--serif);font-size:16.5px;line-height:1.85;color:#fff;font-weight:300}
-  .axiom{text-align:center;font-family:var(--serif);font-size:clamp(16.5px,4.2vw,20px);line-height:1.7;color:var(--ink);font-weight:400;padding:6px 0 2px}
-  .axiom b{color:var(--moss-deep);font-weight:700}
-  .btns{display:flex;gap:9px;justify-content:center;margin-top:24px;flex-wrap:wrap}
   .btn{font-family:var(--sans);font-size:13.5px;font-weight:600;padding:13px 22px;border-radius:11px;cursor:pointer;border:1px solid #ddd4c1;background:var(--cream);color:var(--ink);transition:border-color .18s,background .18s,transform .18s}
   .btn:hover{border-color:var(--moss);background:#f3f7ee;transform:translateY(-1px)}
   .btn.primary{background:var(--moss-deep);color:#fff;border-color:transparent}
@@ -277,7 +238,7 @@
   }
 
   @media(prefers-reduced-motion:reduce){
-    html{scroll-behavior:auto}.reveal{transition:none;opacity:1;transform:none}.tl .row{animation:none;opacity:1}.scroll-cue i{animation:none}
+    html{scroll-behavior:auto}.reveal{transition:none;opacity:1;transform:none}.scroll-cue i{animation:none}
   }
 </style>
 </head>
@@ -383,12 +344,6 @@
     <div class="ccard reveal"><div class="ce">🌱 ARTIFICIAL</div><div class="ct">인공복원</div>
       <div class="cd">사람이 직접 나무를 심고 시설을 세워, 회복을 돕고 앞당기는 방법.</div></div>
   </div>
-</section>
-
-<!-- ===== 본론 : 시뮬레이션 ===== -->
-<section class="app" id="app">
-  <div class="steps" id="steps"><i></i><i></i><i></i><i></i></div>
-  <div class="wrap"><div class="card" id="card"></div></div>
 </section>
 
 <!-- ===== 본론 : 상황별 복원 사례 (가지치기) ===== -->
@@ -585,63 +540,6 @@
     });
   })();
 
-  /* data */
-  var CASES={
-    c1:{tag:'CASE 01 · 당신이 배정받은 땅',desc:'불길이 너무 강했습니다. <b>씨앗 공급원이 모두 타버렸고, 토양의 유기물도 소실</b>되었습니다. 흙은 물을 잘 머금지 못하는 상태입니다.'},
-    c2:{tag:'CASE 02 · 당신이 배정받은 땅',desc:'피해는 컸지만 <b>흙 속에 씨앗이 남아 있고, 토양의 영양분도 살아</b> 있습니다. 땅속에서는 이미 어린나무가 준비 중입니다.'}
-  };
-  var OUT={
-    c1:{
-      natural:{v:'fail',t:'30년을 기다렸지만,\n숲은 돌아오지 않았습니다',tl:[['10년','풀만 듬성듬성 올라옵니다. 새 씨앗이 오지 않습니다.','b'],['20년','여전히 헐벗은 땅. 비가 올 때마다 흙이 쓸려 내려갑니다.','b'],['30년','나무가 자리 잡지 못했습니다. 2차 피해만 커졌습니다.','b']],ex:'기다림은 <b>씨앗이 남아 있을 때만</b> 작동합니다. 이 땅은 사람의 개입이 필요했습니다.'},
-      single:{v:'half',t:'나무는 섰지만,\n숲은 아직입니다',tl:[['10년','심은 나무가 빠르게 자랍니다. 겉보기엔 초록입니다.','h'],['20년','같은 나무만 늘어섰습니다. 병해충 한 번에 크게 흔들립니다.','h'],['30년','나무는 있지만, 새도 동물도 돌아오지 않았습니다.','h']],ex:'한 종만 심으면 <b>생물다양성이 낮아</b> 병해충과 외래종에 취약합니다. 나무가 있다고 숲인 것은 아닙니다.'},
-      survey:{v:'ok',t:'개입이 필요한 땅이었고,\n조건을 보고 개입했습니다',tl:[['10년','주변 식생에 맞는 종들이 자리를 잡습니다.','g'],['20년','키 큰 나무와 낮은 덤불로 층이 생기고, 새가 돌아옵니다.','g'],['30년','토양이 물을 머금기 시작하고, 숲의 기능이 회복됩니다.','g']],ex:'인공복원의 핵심은 <b>심는 것이 아니라 조사</b>입니다. 어떤 땅인지 먼저 물었기에 가능했습니다.'}
-    },
-    c2:{
-      natural:{v:'ok',t:'가장 느리지만,\n가장 건강한 숲이 돌아왔습니다',tl:[['10년','흙 속에 남아 있던 씨앗에서 어린나무가 올라옵니다.','g'],['20년','이 땅에 원래 살던 종들이 스스로 자리를 잡습니다.','g'],['30년','사람이 심지 않은, 이 땅에 가장 맞는 숲이 되었습니다.','g']],ex:'30년이 걸리지만 <b>가장 건강하고, 비용도 가장 적게</b> 듭니다. 기다림도 하나의 복원입니다.'},
-      single:{v:'fail',t:'이미 돌아오고 있던 숲을,\n밀어버렸습니다',tl:[['10년','중장비가 들어와 땅을 정리합니다. 심은 나무가 자랍니다.','b'],['20년','흙 속에서 자라던 어린나무들은 이 과정에서 사라졌습니다.','b'],['30년','원래 있던 다양한 종 대신, 심은 한 종만 남았습니다.','b']],ex:'이 땅은 <b>이미 회복이 시작된 상태</b>였습니다. 개입이 회복을 덮어썼습니다.'},
-      survey:{v:'okbut',t:'성공했습니다.\n다만 묻고 싶습니다',tl:[['10년','조사한 종을 심어 빠르게 자리를 잡습니다.','g'],['20년','다양한 층이 생기고 생태계가 회복됩니다.','g'],['30년','건강한 숲이 되었습니다. 비용과 장비가 투입되었습니다.','h']],ex:'결과는 좋았습니다. 다만 이 땅은 <b>기다리는 것만으로도 같은 곳에 닿을 수 있었습니다.</b> 인간이 어디까지 개입해야 하는가 — 전문가들이 늘 하는 고민입니다.'}
-    }
-  };
-  var VERDICT={fail:{label:'복원 실패',color:'#c4552e'},half:{label:'절반의 회복',color:'#c99a44'},ok:{label:'복원 성공',color:'#5f8557'},okbut:{label:'성공, 그러나',color:'#7a9b5e'}};
-  var CROSS={fail:'이 땅에서는, 기다림만으로는 30년 뒤에도 숲에 닿지 못했습니다.',half:'나무는 돌아왔습니다. 그러나 진짜 숲이라 부르기엔 아직 부족합니다.',ok:'이 땅의 조건에 맞는 선택이었기에, 30년 뒤 원하던 숲에 닿았습니다.',okbut:'원하는 결과에는 닿았습니다. 다만 이 땅은, 기다리는 것만으로도 같은 곳에 닿을 수 있었습니다.'};
-
-  /* flow */
-  var card=document.getElementById('card'), steps=document.getElementById('steps').children;
-  var S={cs:null,choice:null};
-  function mark(n){for(var i=0;i<steps.length;i++)steps[i].className=i<n?'on':'';}
-  function go(fn){card.classList.remove('fade');void card.offsetWidth;card.classList.add('fade');fn();}
-  function bind(sel,fn){var e=card.querySelectorAll(sel);for(var i=0;i<e.length;i++){(function(b){b.addEventListener('click',function(){fn(b);});})(e[i]);}}
-  function esc(s){return s.replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
-
-  function caseView(){
-    mark(1);S.cs=Math.random()<0.5?'c1':'c2';var c=CASES[S.cs];
-    card.innerHTML='<div class="kicker">STEP 1 · 현장 도착</div><div class="qtext">Forest Restorer님,<br>산불 현장에 도착했습니다.</div><div class="qsub">모든 산불 피해지가 같지는 않습니다. 이 땅부터 살펴보세요.</div><div class="case '+S.cs+'"><div class="tag">'+c.tag+'</div><div class="desc">'+c.desc+'</div></div><div class="opts"><button class="opt" data-next="1" style="text-align:center;font-weight:700">살펴봤습니다 · 복원 방법 정하기</button></div>';
-    bind('[data-next]',function(){go(choice);});
-  }
-  function choice(){
-    mark(2);
-    card.innerHTML='<div class="kicker">STEP 2 · 결정</div><div class="qtext">어떤 복원을 택하시겠습니까?</div><div class="qsub">'+(S.cs==='c1'?'씨앗도 흙의 양분도 남지 않은 땅입니다.':'흙 속에 씨앗과 양분이 남아 있는 땅입니다.')+'</div><div class="opts"><button class="opt" data-c="natural">⏳ 자연복원 — 기다린다<small>사람이 손대지 않고, 숲이 스스로 돌아오게 한다</small></button><button class="opt" data-c="survey">🔍 인공복원 — 조사한 뒤 여러 종을 심는다<small>주변에 원래 살던 나무를 알아보고, 그에 맞게 심는다</small></button><button class="opt" data-c="single">⚡ 인공복원 — 빨리 자라는 한 종을 심는다<small>가장 빠르게 초록을 되돌린다</small></button></div>';
-    bind('[data-c]',function(b){S.choice=b.getAttribute('data-c');go(result);});
-  }
-  function result(){
-    mark(3);var o=OUT[S.cs][S.choice],v=VERDICT[o.v];
-    var rows=o.tl.map(function(r,i){return '<div class="row '+r[2]+'" style="animation-delay:'+(i*0.3+0.1)+'s"><div class="yr">'+r[0]+'</div><div class="txt">'+r[1]+'</div></div>';}).join('');
-    card.innerHTML='<div class="verdict"><span class="vlabel" style="background:'+v.color+'">'+v.label+'</span><div class="vtitle">'+o.t.replace(/\n/g,'<br>')+'</div></div><div class="tl">'+rows+'</div><div class="explain">'+o.ex+'</div><div class="btns"><button class="btn primary" data-go="1">이 결과가 뜻하는 것</button></div>';
-    bind('[data-go]',function(){go(cross);});
-  }
-  function cross(){
-    mark(4);var o=OUT[S.cs][S.choice];
-    card.innerHTML='<div class="kicker">이 땅의 조건 × 당신의 선택</div><div class="cross"><div class="cv">그 결과가 뜻하는 것</div><div class="cx">'+CROSS[o.v]+'</div></div><div class="axiom">복원 방법에 <b>정답은 없습니다.</b><br>그러나 조건을 <b>묻지 않고 내린 결정은 오답</b>입니다.</div><div class="btns"><button class="btn primary" data-go="1">그럼 실제 사례는?</button><button class="btn" data-again="1">다른 땅에서 다시</button></div>';
-    bind('[data-go]',function(){document.getElementById('cases').scrollIntoView({behavior:'smooth',block:'start'});});
-    bind('[data-again]',function(){restart();});
-  }
-  function restart(){
-    S={cs:null,choice:null};
-    document.getElementById('tick').style.display='none';
-    document.getElementById('app').scrollIntoView({behavior:'smooth',block:'start'});
-    setTimeout(function(){go(caseView);},300);
-  }
-
   /* 내 복원가 티켓 받기 — 바로 발급 */
   document.getElementById('toTicket').addEventListener('click',function(){
     buildTicket();
@@ -658,8 +556,6 @@
     document.getElementById('tick').style.display='block';
     document.getElementById('sbtn').addEventListener('click',function(){if(this.classList.contains('done'))return;this.classList.add('done');this.textContent='✓ 인증 완료되었습니다';});
   }
-
-  caseView();
 })();
 </script>
 </body>
