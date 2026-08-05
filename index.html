@@ -40,6 +40,8 @@
   .sapling{opacity:calc((var(--recovery) - .55) * 2.6);transform-box:fill-box;transform-origin:bottom center;transform:scaleY(var(--recovery))}
   .haze{opacity:calc(.55 - var(--recovery)*.55)}
   .bird{opacity:calc((var(--recovery) - .72) * 3.6)}
+  .rabbit{opacity:calc((var(--recovery) - .76) * 4.2)}
+  .wildcat{opacity:calc((var(--recovery) - .82) * 5.6)}
   .hero__veil{position:absolute;inset:0;z-index:2;background:linear-gradient(180deg,rgba(14,11,6,.62) 0%,rgba(14,11,6,.06) 30%,rgba(14,11,6,.1) 60%,rgba(14,11,6,.88) 100%)}
   .hero__content{position:relative;z-index:3;text-align:center;padding:0 24px;max-width:620px}
   .hero__eyebrow{font-size:11px;letter-spacing:.38em;color:var(--ember-soft);margin-bottom:22px;font-weight:600}
@@ -241,13 +243,25 @@
       <g class="bird" fill="none" stroke="#3d5340" stroke-width="2.4" stroke-linecap="round">
         <path d="M250,150 q10,-9 20,0 q10,-9 20,0"/><path d="M320,190 q7,-6 14,0 q7,-6 14,0"/><path d="M905,140 q9,-8 18,0 q9,-8 18,0"/>
       </g>
+      <g class="rabbit" fill="none" stroke="#3d5340" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M148,656 Q145,624 152,600 M162,656 Q167,626 161,602"/>
+        <path d="M128,662 Q135,644 152,642 Q170,644 176,660 Q178,670 168,674 Q152,679 136,674 Q126,671 128,662 Z"/>
+        <circle cx="167" cy="656" r="1.6" fill="#3d5340"/>
+      </g>
+      <g class="wildcat" fill="none" stroke="#3d5340" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M985,634 L978,612 L992,624 Z M1015,634 L1022,612 L1008,624 Z"/>
+        <path d="M965,672 Q963,640 1000,638 Q1037,640 1035,672 Q1034,684 1000,684 Q966,684 965,672 Z"/>
+        <path d="M1035,668 Q1050,660 1058,644"/>
+        <circle cx="988" cy="655" r="1.6" fill="#3d5340"/><circle cx="1012" cy="655" r="1.6" fill="#3d5340"/>
+        <circle cx="984" cy="668" r="2" fill="#3d5340"/><circle cx="1016" cy="668" r="2" fill="#3d5340"/><circle cx="1000" cy="674" r="2" fill="#3d5340"/>
+      </g>
     </svg>
     <div class="hero__veil"></div>
     <div class="hero__content">
-      <div class="hero__eyebrow">보이지 않는 숲</div>
-      <h1 class="hero__title"><span class="line">이 숲이 다시 숲이 되기까지,</span><span class="line"><b>30년</b>이 걸립니다.</span></h1>
+      <div class="hero__eyebrow">다시:Forest</div>
+      <h1 class="hero__title"><span class="line">오늘의 올바른 복원이,</span><span class="line"><b>내일의 숲</b>을 다시 자라게 합니다.</span></h1>
       <div class="hero__rule"></div>
-      <p class="hero__sub">산불은 1초, 복원은 한 세대.<br>도심 속 서울숲에서, 사라진 숲을 만나보세요.</p>
+      <p class="hero__sub">우리 함께 숲을 살리러 떠나볼까요?</p>
     </div>
     <div class="scroll-cue">스크롤<i></i></div>
   </div>
