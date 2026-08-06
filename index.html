@@ -232,6 +232,9 @@
   .songwrite .wdone .em{font-size:34px}
   .songwrite .wdone .t{font-family:var(--serif);font-size:18px;color:var(--growth-soft);font-weight:500;margin-top:10px}
   .songwrite .wdone .s{font-size:12.5px;color:var(--dim2);margin-top:10px;line-height:1.8;font-weight:300}
+  .songwrite .wdone .wedit{margin-top:18px;font-family:var(--sans);font-size:12px;font-weight:600;color:var(--bone-dim);
+    background:none;border:1px solid rgba(240,234,220,.22);border-radius:999px;padding:8px 16px;cursor:pointer;transition:border-color .2s,color .2s}
+  .songwrite .wdone .wedit:hover{border-color:var(--growth);color:var(--growth)}
 
   .songnote{max-width:460px;margin:26px auto 0;text-align:center;font-size:12.5px;color:var(--dim2);line-height:1.9;font-weight:300}
   .songnote b{color:var(--growth-soft);font-weight:500}
@@ -606,7 +609,9 @@
       '내가 어른이 되면 이 숲에 놀러 갈래요.',
       '30년 뒤에 다시 보러 올게요.'
     ];
+    var LS_KEY='reforest2026_myLyric';
     var myLyric=null;
+    try{myLyric=localStorage.getItem(LS_KEY);}catch(e){}
     function escSong(s){return s.replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
     function renderSong(){
       var box=document.getElementById('lyricbox'), out=[];
@@ -618,18 +623,34 @@
     }
     renderSong();
 
-    var wta=document.getElementById('wta'), wcn=document.getElementById('wcn'), wbtn=document.getElementById('wbtn');
-    wta.addEventListener('input',function(){wcn.textContent=wta.value.length;wbtn.disabled=wta.value.trim().length===0;});
-    wbtn.addEventListener('click',function(){
-      myLyric=wta.value.trim(); if(!myLyric)return;
-      renderSong();
+    function showDone(){
       document.getElementById('songwrite').innerHTML=
         '<div class="wdone"><div class="em">🌱</div>'+
         '<div class="t">당신의 한 마디가 가사에 새겨졌어요</div>'+
-        '<div class="s">완성된 노래는 저희 인스타그램에서<br>만나보실 수 있어요. 고맙습니다!</div></div>';
-      var mine=document.querySelector('.songlyrics .lyr.mine');
-      if(mine) mine.scrollIntoView({behavior:'smooth',block:'center'});
-    });
+        '<div class="s">완성된 노래는 저희 인스타그램에서<br>만나보실 수 있어요. 고맙습니다!</div>'+
+        '<button class="wedit" id="wedit" type="button">다시 쓸래요</button></div>';
+      var edit=document.getElementById('wedit');
+      if(edit) edit.addEventListener('click',function(){
+        try{localStorage.removeItem(LS_KEY);}catch(e){}
+        myLyric=null; renderSong(); location.reload();
+      });
+    }
+
+    /* 이전에 남긴 가사가 있으면 새로고침해도 완료 상태 그대로 표시 */
+    if(myLyric) showDone();
+
+    var wta=document.getElementById('wta'), wcn=document.getElementById('wcn'), wbtn=document.getElementById('wbtn');
+    if(wta){
+      wta.addEventListener('input',function(){wcn.textContent=wta.value.length;wbtn.disabled=wta.value.trim().length===0;});
+      wbtn.addEventListener('click',function(){
+        myLyric=wta.value.trim(); if(!myLyric)return;
+        try{localStorage.setItem(LS_KEY,myLyric);}catch(e){}
+        renderSong();
+        showDone();
+        var mine=document.querySelector('.songlyrics .lyr.mine');
+        if(mine) mine.scrollIntoView({behavior:'smooth',block:'center'});
+      });
+    }
 
     var playing=false;
     document.getElementById('pbtn').addEventListener('click',function(){
