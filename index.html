@@ -599,61 +599,11 @@
   lightbox.addEventListener('click',function(e){if(e.target===lightbox)closeLightbox();});
   window.addEventListener('keydown',function(e){if(e.key==='Escape')closeLightbox();});
 
-  /* ===== SONG (우리가 만드는 노래) ===== */
+  /* ===== SONG: 오디오 플레이어 (가사 로직은 아래 Firebase 모듈 스크립트에서 처리) ===== */
   (function(){
-    /* 아래 SEED에 실제로 모인 시민들의 한 마디를 넣어주세요 (첫 노래용) */
-    var SEED=[
-      '천천히 와도 괜찮으니, 꼭 돌아와 주세요.',
-      '그늘이 다시 생기면, 그 아래 앉아 있을게요.',
-      '삵아, 집 잘 짓고 있어.',
-      '내가 어른이 되면 이 숲에 놀러 갈래요.',
-      '30년 뒤에 다시 보러 올게요.'
-    ];
-    var LS_KEY='reforest2026_myLyric';
-    var myLyric=null;
-    try{myLyric=localStorage.getItem(LS_KEY);}catch(e){}
-    function escSong(s){return s.replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
-    function renderSong(){
-      var box=document.getElementById('lyricbox'), out=[];
-      for(var i=0;i<SEED.length;i++){
-        out.push('<div class="lyr">“'+escSong(SEED[i])+'”</div>');
-        if(i===1 && myLyric) out.push('<div class="lyr mine">“'+escSong(myLyric)+'”</div>');
-      }
-      box.innerHTML=out.join('');
-    }
-    renderSong();
-
-    function showDone(){
-      document.getElementById('songwrite').innerHTML=
-        '<div class="wdone"><div class="em">🌱</div>'+
-        '<div class="t">당신의 한 마디가 가사에 새겨졌어요</div>'+
-        '<div class="s">완성된 노래는 저희 인스타그램에서<br>만나보실 수 있어요. 고맙습니다!</div>'+
-        '<button class="wedit" id="wedit" type="button">다시 쓸래요</button></div>';
-      var edit=document.getElementById('wedit');
-      if(edit) edit.addEventListener('click',function(){
-        try{localStorage.removeItem(LS_KEY);}catch(e){}
-        myLyric=null; renderSong(); location.reload();
-      });
-    }
-
-    /* 이전에 남긴 가사가 있으면 새로고침해도 완료 상태 그대로 표시 */
-    if(myLyric) showDone();
-
-    var wta=document.getElementById('wta'), wcn=document.getElementById('wcn'), wbtn=document.getElementById('wbtn');
-    if(wta){
-      wta.addEventListener('input',function(){wcn.textContent=wta.value.length;wbtn.disabled=wta.value.trim().length===0;});
-      wbtn.addEventListener('click',function(){
-        myLyric=wta.value.trim(); if(!myLyric)return;
-        try{localStorage.setItem(LS_KEY,myLyric);}catch(e){}
-        renderSong();
-        showDone();
-        var mine=document.querySelector('.songlyrics .lyr.mine');
-        if(mine) mine.scrollIntoView({behavior:'smooth',block:'center'});
-      });
-    }
-
     var playing=false;
-    document.getElementById('pbtn').addEventListener('click',function(){
+    var pbtnEl=document.getElementById('pbtn');
+    if(pbtnEl) pbtnEl.addEventListener('click',function(){
       var a=document.getElementById('bgm'), eq=document.getElementById('eq');
       if(!playing){var p=a.play();if(p&&p.catch)p.catch(function(){});playing=true;this.textContent='❚❚';eq.classList.add('on');}
       else{a.pause();playing=false;this.textContent='▶';eq.classList.remove('on');}
@@ -677,6 +627,101 @@
     document.getElementById('sbtn').addEventListener('click',function(){if(this.classList.contains('done'))return;this.classList.add('done');this.textContent='✓ 인증 완료되었습니다';});
   }
 })();
+</script>
+<!-- ===== SONG 가사: Firebase(Firestore)로 모든 방문자 가사 실시간 공유 ===== -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+  import { getFirestore, collection, addDoc, query, orderBy, limit, onSnapshot, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.14.1/firebase-firestore.js";
+
+  var firebaseConfig = {
+    apiKey: "AIzaSyAmzGxfsa_4mAsjezNsreUezMGnWHsZPLo",
+    authDomain: "reforest-2026.firebaseapp.com",
+    projectId: "reforest-2026",
+    storageBucket: "reforest-2026.firebasestorage.app",
+    messagingSenderId: "985287455683",
+    appId: "1:985287455683:web:b7e44d1d2c60c434dec376",
+    measurementId: "G-7ZQRYXJMF8"
+  };
+  var app = initializeApp(firebaseConfig);
+  var db = getFirestore(app);
+
+  /* 첫 노래를 만든 원 시드 가사 (항상 위쪽에 고정 표시) */
+  var SEED = [
+    '천천히 와도 괜찮으니, 꼭 돌아와 주세요.',
+    '그늘이 다시 생기면, 그 아래 앉아 있을게요.',
+    '삵아, 집 잘 짓고 있어.',
+    '내가 어른이 되면 이 숲에 놀러 갈래요.',
+    '30년 뒤에 다시 보러 올게요.'
+  ];
+  var LS_ID_KEY='reforest2026_myLyricId', LS_TEXT_KEY='reforest2026_myLyric';
+  var myId=null;
+  try{ myId=localStorage.getItem(LS_ID_KEY); }catch(e){}
+
+  function escSong(s){return s.replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+
+  var liveLyrics=[];
+  function renderSong(){
+    var box=document.getElementById('lyricbox'); if(!box) return;
+    var out=[];
+    SEED.forEach(function(t){ out.push('<div class="lyr">“'+escSong(t)+'”</div>'); });
+    liveLyrics.forEach(function(item){
+      var mineClass=(item.id===myId)?' mine':'';
+      out.push('<div class="lyr'+mineClass+'">“'+escSong(item.text)+'”</div>');
+    });
+    box.innerHTML=out.join('');
+  }
+  renderSong();
+
+  function showDone(){
+    var w=document.getElementById('songwrite'); if(!w) return;
+    w.innerHTML=
+      '<div class="wdone"><div class="em">🌱</div>'+
+      '<div class="t">당신의 한 마디가 가사에 새겨졌어요</div>'+
+      '<div class="s">완성된 노래는 저희 인스타그램에서<br>만나보실 수 있어요. 고맙습니다!</div>'+
+      '<button class="wedit" id="wedit" type="button">다시 쓸래요</button></div>';
+    var edit=document.getElementById('wedit');
+    if(edit) edit.addEventListener('click',function(){
+      try{ localStorage.removeItem(LS_ID_KEY); localStorage.removeItem(LS_TEXT_KEY); }catch(e){}
+      location.reload();
+    });
+  }
+  if(myId) showDone();
+
+  /* 모든 방문자가 남긴 가사를 실시간으로 불러오기 (최근 30개, 오래된 순으로 표시) */
+  try{
+    var q=query(collection(db,'lyrics'), orderBy('createdAt','desc'), limit(30));
+    onSnapshot(q, function(snap){
+      var arr=[];
+      snap.forEach(function(doc){ arr.push({id:doc.id, text:(doc.data().text||'')}); });
+      arr.reverse();
+      liveLyrics=arr;
+      renderSong();
+    }, function(err){ console.warn('lyrics listen failed', err); });
+  }catch(e){ console.warn('lyrics init failed', e); }
+
+  var wta=document.getElementById('wta'), wcn=document.getElementById('wcn'), wbtn=document.getElementById('wbtn');
+  if(wta){
+    wta.addEventListener('input',function(){ wcn.textContent=wta.value.length; wbtn.disabled=wta.value.trim().length===0; });
+    wbtn.addEventListener('click',function(){
+      var text=wta.value.trim(); if(!text) return;
+      wbtn.disabled=true; wbtn.textContent='새기는 중...';
+      addDoc(collection(db,'lyrics'), { text:text, createdAt:serverTimestamp() })
+        .then(function(ref){
+          try{ localStorage.setItem(LS_ID_KEY, ref.id); localStorage.setItem(LS_TEXT_KEY, text); }catch(e){}
+          myId=ref.id;
+          showDone();
+          setTimeout(function(){
+            var mine=document.querySelector('.songlyrics .lyr.mine');
+            if(mine) mine.scrollIntoView({behavior:'smooth',block:'center'});
+          },300);
+        })
+        .catch(function(err){
+          console.error(err);
+          wbtn.disabled=false; wbtn.textContent='가사에 새기기';
+          alert('저장에 실패했어요. 다시 시도해주세요.');
+        });
+    });
+  }
 </script>
 </body>
 </html>
