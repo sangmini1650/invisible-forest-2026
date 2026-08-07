@@ -493,8 +493,8 @@
       <div class="ps">시민들의 한 마디로 만든 노래</div>
     </div>
     <div class="eq" id="eq"><i></i><i></i><i></i><i></i></div>
-    <!-- 음악 파일: bgm.mp3 를 이 파일과 같은 폴더에 넣어주세요 -->
-    <audio id="bgm" src="bgm.mp3" loop preload="none"></audio>
+    <!-- 부스 현장 스피커로 BGM을 직접 재생하므로, 이 버튼은 실제 오디오 없이 '재생 중' 표시만 토글합니다. -->
+
   </div>
 
   <div class="songlyrics reveal">
@@ -626,9 +626,10 @@
     var playing=false;
     var pbtnEl=document.getElementById('pbtn');
     if(pbtnEl) pbtnEl.addEventListener('click',function(){
-      var a=document.getElementById('bgm'), eq=document.getElementById('eq');
-      if(!playing){var p=a.play();if(p&&p.catch)p.catch(function(){});playing=true;this.textContent='❚❚';eq.classList.add('on');}
-      else{a.pause();playing=false;this.textContent='▶';eq.classList.remove('on');}
+      var eq=document.getElementById('eq');
+      playing=!playing;
+      this.textContent=playing?'❚❚':'▶';
+      eq.classList.toggle('on',playing);
     });
   })();
 
